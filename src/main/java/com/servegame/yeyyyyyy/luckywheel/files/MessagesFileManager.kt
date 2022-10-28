@@ -23,7 +23,7 @@ class MessagesFileManager (private val plugin: LuckyWheel){
             return
         }
         try {
-            this.getMessagesConfig()?.save(this.configFile!!)
+            this.getMessagesConfig().save(this.configFile!!)
         } catch (e: IOException) {
             logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Could not save messages.yml"))
             logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Check the below message for the reasons!"))
@@ -31,11 +31,11 @@ class MessagesFileManager (private val plugin: LuckyWheel){
         }
     }
 
-    private fun getMessagesConfig(): FileConfiguration? {
+    fun getMessagesConfig(): FileConfiguration {
         if (dataConfig == null) {
             this.reloadMessagesConfig()
         }
-        return dataConfig
+        return dataConfig!!
     }
 
     private fun reloadMessagesConfig() {

@@ -1,7 +1,6 @@
 package com.servegame.yeyyyyyy.luckywheel.files
 
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
-import com.servegame.yeyyyyyy.luckywheel.utils.ColorUtils
 import org.bukkit.ChatColor
 import org.bukkit.configuration.file.FileConfiguration
 import org.bukkit.configuration.file.YamlConfiguration
@@ -10,7 +9,7 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-class MessagesFileManager (val plugin: LuckyWheel){
+class MessagesFileManager (private val plugin: LuckyWheel){
     private val logger = LuckyWheel.plugin.logger
     private var dataConfig: FileConfiguration? = null
     private var configFile: File? = null
@@ -24,7 +23,7 @@ class MessagesFileManager (val plugin: LuckyWheel){
             return
         }
         try {
-            this.getMessagesConfig()?.save(this.configFile!!);
+            this.getMessagesConfig()?.save(this.configFile!!)
         } catch (e: IOException) {
             logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Could not save messages.yml"))
             logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Check the below message for the reasons!"))

@@ -5,3 +5,12 @@ api-version: 1.19
 prefix: LuckyWheel
 authors: [ djessy5001 ]
 description: Spin the Lucky Wheel to get a random prize!
+commands:
+  luckywheel:
+    description: The main command. Shows a GUI with the LootTable and allows the user to spin the wheel.
+    usage: /luckywheel
+    permission: luckywheel
+    aliases: [ lw ]
+  test:
+    description: Multipurpose test command
+    usage: /test

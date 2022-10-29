@@ -1,6 +1,7 @@
 package com.servegame.yeyyyyyy.luckywheel
 
 import com.servegame.yeyyyyyy.luckywheel.commands.LuckyWheelCommand
+import com.servegame.yeyyyyyy.luckywheel.commands.TestCommand
 import com.servegame.yeyyyyyy.luckywheel.files.MessagesFileManager
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
@@ -52,6 +53,7 @@ class LuckyWheel : JavaPlugin() {
 
     private fun enableCommands() {
         getCommand("luckywheel")!!.setExecutor(LuckyWheelCommand())
+        getCommand("test")!!.setExecutor(TestCommand())
     }
 
     override fun onDisable() {

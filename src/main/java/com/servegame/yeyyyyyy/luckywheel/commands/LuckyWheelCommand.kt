@@ -9,7 +9,7 @@ import org.bukkit.entity.Player
 
 class LuckyWheelCommand : CommandExecutor {
     private val logger = LuckyWheel.plugin.logger
-    private val messagesConfig = LuckyWheel.plugin.messagesFileManager.getMessagesConfig()
+    private val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {

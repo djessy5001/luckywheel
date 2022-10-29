@@ -9,36 +9,39 @@ import java.io.IOException
 import java.io.InputStreamReader
 
 
-class MessagesFileManager (private val plugin: LuckyWheel){
+class MessagesFileManager(private val plugin: LuckyWheel) : FileManager {
     private val logger = LuckyWheel.plugin.logger
     private var dataConfig: FileConfiguration? = null
     private var configFile: File? = null
 
     init {
-        saveDefaultMessagesConfig()
+        saveDefaultConfig()
     }
 
-    private fun saveDefaultMessagesConfig() {
-        if (this.dataConfig == null || this.configFile == null) {
-            return
-        }
+    override fun saveDefaultConfig() {
+        if (this.dataConfig == null || this.configFile == null) return
         try {
-            this.getMessagesConfig().save(this.configFile!!)
+            this.getConfig().save(this.configFile!!)
         } catch (e: IOException) {
             logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Could not save messages.yml"))
-            logger.severe(ChatColor.translateAlternateColorCodes('&', "&bLuckyWheel - &4Check the below message for the reasons!"))
+            logger.severe(
+                ChatColor.translateAlternateColorCodes(
+                    '&',
+                    "&bLuckyWheel - &4Check the below message for the reasons!"
+                )
+            )
             e.printStackTrace()
         }
     }
 
-    fun getMessagesConfig(): FileConfiguration {
+    override fun getConfig(): FileConfiguration {
         if (dataConfig == null) {
-            this.reloadMessagesConfig()
+            this.reloadConfig()
         }
         return dataConfig!!
     }
 
-    private fun reloadMessagesConfig() {
+    override fun reloadConfig() {
         if (configFile == null) {
             configFile = File(plugin.dataFolder, "messages.yml")
         }

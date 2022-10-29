@@ -8,6 +8,6 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 
 # LuckyWheelCommand messages
-player_only_command: "&4That command cna only be executed by a player."
+player_only_command: "That command can only be executed by a player."
 invalid_parameter: "&4Invalid parameters given."
 luckywheel_command_no_permission: "&4You don't have the permissions required to use that command."

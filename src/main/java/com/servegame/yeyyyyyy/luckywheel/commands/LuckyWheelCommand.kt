@@ -1,6 +1,7 @@
 package com.servegame.yeyyyyyy.luckywheel.commands
 
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
+import com.servegame.yeyyyyyy.luckywheel.menusystem.Menu
 import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
@@ -17,7 +18,7 @@ class LuckyWheelCommand : CommandExecutor {
             return false
         }
         val player: Player = sender
-        if (!player.hasPermission("luckywheel")) {
+        if (!player.hasPermission("luckywheel.command")) {
             send(player, "luckywheel_command_no_permission")
             return false
         }
@@ -26,11 +27,14 @@ class LuckyWheelCommand : CommandExecutor {
             return false
         }
         // Do something
-
+        val menu = Menu()
+//        menu.openLootTableGui(player, LootTable())
+        menu.openMainMenuGui(player)
         return true
     }
 
     private fun send(player: Player, text: String) {
-        player.sendMessage(ChatColor.translateAlternateColorCodes('$', text))
+        val message = messagesConfig.getString(text)!!
+        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message))
     }
 }

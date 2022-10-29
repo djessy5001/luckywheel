@@ -52,8 +52,8 @@ class LuckyWheel : JavaPlugin() {
     }
 
     private fun enableCommands() {
-        getCommand("luckywheel")!!.setExecutor(LuckyWheelCommand())
-        getCommand("test")!!.setExecutor(TestCommand())
+        server.getPluginCommand("luckywheel")!!.setExecutor(LuckyWheelCommand())
+        server.getPluginCommand("test")!!.setExecutor(TestCommand())
     }
 
     override fun onDisable() {

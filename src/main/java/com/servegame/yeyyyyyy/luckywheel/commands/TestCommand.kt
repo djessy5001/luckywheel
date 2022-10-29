@@ -13,7 +13,7 @@ class TestCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         logger.info("total proba")
         val lootTable = LootTable()
-        logger.info(lootTable.getRandomItem().toString())
+        logger.info(lootTable.getRandomLoot().toString())
         // Do something
 
         return true

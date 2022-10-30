@@ -15,7 +15,7 @@ import org.bukkit.inventory.ItemStack
 
 class Menu : Listener {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
-    val wheels = mutableListOf<Pair<String, Wheel>>()
+    var wheel: Wheel? = null
 
     init {
         Bukkit.getPluginManager().registerEvents(this, LuckyWheel.plugin)
@@ -41,10 +41,10 @@ class Menu : Listener {
     private fun openWheelGui(player: Player, lootTable: LootTable) {
         val inv = Bukkit.createInventory(null, 27, MenuTitle.WheelMenu.title)
 
-        val wheel = Wheel(lootTable, this, inv)
-        paintWheelRow(inv, wheel)
+        wheel = Wheel(lootTable, this, inv)
+        paintWheelRow(inv, wheel!!)
 
-        addSpinItem(inv, 9 + 5)
+        addSpinItem(inv, 9 + 4)
 
         addExitDoor(inv)
         player.openInventory(inv)
@@ -98,8 +98,14 @@ class Menu : Listener {
 
     private fun onMainMenuClick(event: InventoryClickEvent) {
         event.isCancelled = true
-        if (event.currentItem?.itemMeta?.displayName == messagesConfig.getColoredString("spin_the_wheel")) {
-            openWheelGui(event.whoClicked as Player, LootTable())
+        when (event.currentItem?.itemMeta?.displayName) {
+            messagesConfig.getColoredString("spin_the_wheel") -> {
+                event.whoClicked.closeInventory()
+                openWheelGui(event.whoClicked as Player, LootTable())
+            }
+            messagesConfig.getColoredString("exit_menu") -> {
+                event.whoClicked.closeInventory()
+            }
         }
         return
     }
@@ -114,11 +120,14 @@ class Menu : Listener {
 
     private fun onWheelMenuClick(event: InventoryClickEvent) {
         event.isCancelled = true
-        if (event.currentItem?.itemMeta?.displayName == messagesConfig.getColoredString("spin_the_wheel")) {
-            val meta = event.currentItem!!.itemMeta!!
-            var userWheel: Wheel? = null
-            wheels.forEach { (id, wheel) -> if (id == meta.lore?.get(0)) userWheel = wheel }
-            userWheel?.spin()
+        when (event.currentItem?.itemMeta?.displayName) {
+            messagesConfig.getColoredString("spin_the_wheel") -> {
+                event.inventory.remove(event.currentItem!!)
+                wheel!!.spin()
+            }
+            messagesConfig.getColoredString("exit_menu") -> {
+                event.whoClicked.closeInventory()
+            }
         }
         return
     }

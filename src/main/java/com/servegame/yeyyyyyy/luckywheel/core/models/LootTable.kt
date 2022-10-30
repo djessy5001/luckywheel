@@ -19,7 +19,7 @@ class LootTable (
         loots = loots.subList(0, minOf(maxLootTableSize - 1, loots.size))
     }
 
-    fun getRandomLoot(): Pair<Loot, Double> {
+    fun getRandomLoot(): Pair<Loot, String> {
         val randomNumber = Random.nextDouble() * totalProbability
         var summedWeight = 0.0
 
@@ -27,7 +27,7 @@ class LootTable (
         for (loot in loots) {
             summedWeight += loot.weight
             if (randomNumber < summedWeight) {
-                return Pair(loot, getProbabilityOfLoot(loot))
+                return Pair(loot, getProbabilityOfLootFormatted(loot))
             }
         }
         throw Exception("End of loots reached but no Loot was returned!")

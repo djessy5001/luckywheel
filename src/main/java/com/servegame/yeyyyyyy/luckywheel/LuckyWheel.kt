@@ -3,6 +3,7 @@ package com.servegame.yeyyyyyy.luckywheel
 import com.servegame.yeyyyyyy.luckywheel.commands.LuckyWheelCommand
 import com.servegame.yeyyyyyy.luckywheel.commands.TestCommand
 import com.servegame.yeyyyyyy.luckywheel.files.MessagesFileManager
+import com.servegame.yeyyyyyy.luckywheel.menusystem.MenuListener
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
@@ -24,6 +25,7 @@ class LuckyWheel : JavaPlugin() {
         loadConfigFile()
         loadFileManagers()
         enableCommands()
+        enableListeners()
     }
 
     private fun checkVersionCompatible(): Boolean {
@@ -54,6 +56,10 @@ class LuckyWheel : JavaPlugin() {
     private fun enableCommands() {
         server.getPluginCommand("luckywheel")!!.setExecutor(LuckyWheelCommand())
         server.getPluginCommand("test")!!.setExecutor(TestCommand())
+    }
+
+    private fun enableListeners() {
+        Bukkit.getPluginManager().registerEvents(MenuListener(), this)
     }
 
     override fun onDisable() {

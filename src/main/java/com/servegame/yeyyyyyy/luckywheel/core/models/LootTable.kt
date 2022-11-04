@@ -6,21 +6,36 @@ import kotlin.math.ceil
 import kotlin.random.Random
 
 class LootTable (
-    private var loots: MutableList<Loot> = mutableListOf(Loot(ItemStack(Material.DIAMOND_SWORD), 0.2), Loot(ItemStack(Material.DIRT, 64))),
+    private var loots: MutableList<Loot> = mutableListOf(
+        Loot(ItemStack(Material.DIAMOND_SWORD), 0.2),
+        Loot(ItemStack(Material.DIRT, 64)),
+        Loot(ItemStack(Material.GLASS_BOTTLE, 64), 0.8),
+        Loot(ItemStack(Material.DIAMOND_BLOCK, 2), 0.1),
+        Loot(ItemStack(Material.STONE_SHOVEL, 1)),
+        Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
+        Loot(ItemStack(Material.PACKED_ICE, 64)),
+        Loot(ItemStack(Material.DIAMOND_SWORD), 0.2),
+        Loot(ItemStack(Material.DIRT, 64)),
+        Loot(ItemStack(Material.GLASS_BOTTLE, 64), 0.8),
+        Loot(ItemStack(Material.DIAMOND_BLOCK, 2), 0.1),
+        Loot(ItemStack(Material.STONE_SHOVEL, 1)),
+        Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
+        Loot(ItemStack(Material.PACKED_ICE, 64))
+    ),
     override val size: Int = loots.size
 ) : MutableCollection<Loot> {
-    val maxLootTableSize = 53
-    val totalProbability
+    private val maxLootTableSize = 52
+    private val totalWeight
         get() = loots.fold(0.0) { acc, loot -> acc + loot.weight }
     val inventorySize
-        get() = ceil((loots.size + 1) / 9.0).toInt() * 9
+        get() = ceil((loots.size + 2) / 9.0).toInt() * 9
 
     init {
         loots = loots.subList(0, minOf(maxLootTableSize - 1, loots.size))
     }
 
     fun getRandomLoot(): Pair<Loot, String> {
-        val randomNumber = Random.nextDouble() * totalProbability
+        val randomNumber = Random.nextDouble() * totalWeight
         var summedWeight = 0.0
 
         // goes through the loots list until randomNumber is lower than the summedWeight, then return the current loot
@@ -39,7 +54,7 @@ class LootTable (
      */
     fun getProbabilityOfLootAt(index: Int): Double {
         if (index in 0.until(loots.size)) {
-            return loots[index].weight / totalProbability
+            return loots[index].weight / totalWeight
         }
         return -1.0
     }

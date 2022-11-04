@@ -7,26 +7,19 @@ import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.entity.Player
-import org.bukkit.event.EventHandler
-import org.bukkit.event.Listener
-import org.bukkit.event.inventory.InventoryClickEvent
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
+import org.bukkit.metadata.FixedMetadataValue
 
-class Menu : Listener {
+class Menu {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
-    var wheel: Wheel? = null
-
-    init {
-        Bukkit.getPluginManager().registerEvents(this, LuckyWheel.plugin)
-    }
 
     fun openMainMenuGui(player: Player) {
         val inv = Bukkit.createInventory(null, 9, MenuTitle.MainMenu.title)
 
-        addSpinItem(inv)
-
-        addExitDoor(inv)
+        addItem(MenuItem.spinTheWheel.copy(), inv)
+        addItem(MenuItem.showLootTable.copy(), inv)
+        addItem(MenuItem.exitMenu.copy(pos = inv.size - 1), inv)
         player.openInventory(inv)
     }
 
@@ -34,19 +27,23 @@ class Menu : Listener {
         val inv = Bukkit.createInventory(null, lootTable.inventorySize, MenuTitle.LootTableMenu.title)
         insertLootTableInInventory(lootTable, inv)
 
-        addExitDoor(inv)
+        addItem(MenuItem.goBack.copy(pos = inv.size - 2), inv)
+        addItem(MenuItem.exitMenu.copy(pos = inv.size - 1), inv)
         player.openInventory(inv)
     }
 
-    private fun openWheelGui(player: Player, lootTable: LootTable) {
+    fun openWheelGui(player: Player, lootTable: LootTable) {
         val inv = Bukkit.createInventory(null, 27, MenuTitle.WheelMenu.title)
 
-        wheel = Wheel(lootTable, this, inv)
-        paintWheelRow(inv, wheel!!)
+        val wheel = Wheel(lootTable, this, inv, player)
+        paintWheelRow(inv, wheel)
+        val wheelMeta = FixedMetadataValue(LuckyWheel.plugin, wheel)
+        player.setMetadata("luckywheel_wheel", wheelMeta)
 
-        addSpinItem(inv, 9 + 4)
-
-        addExitDoor(inv)
+        (9..17).forEach { pos -> addItem(MenuItem(Material.WHITE_STAINED_GLASS_PANE, "-", pos), inv) }
+        addItem(MenuItem.spinTheWheel.copy(pos = 9 + 4), inv)
+        addItem(MenuItem.goBack.copy(pos = inv.size - 2), inv)
+        addItem(MenuItem.exitMenu.copy(pos = inv.size - 1), inv)
         player.openInventory(inv)
     }
 
@@ -55,31 +52,18 @@ class Menu : Listener {
         wheel.itemRow.subList(0, 9).forEach { item -> inv.setItem(index++, item) }
     }
 
-    @EventHandler
-    fun onInventoryClick(event: InventoryClickEvent) {
-        when (event.view.title) {
-            MenuTitle.MainMenu.title -> onMainMenuClick(event)
-            MenuTitle.LootTableMenu.title -> onLootTableMenuClick(event)
-            MenuTitle.WheelMenu.title -> onWheelMenuClick(event)
-        }
+    private fun addItem(menuItem: MenuItem, inv: Inventory) {
+        val (material, text, pos) = menuItem
+        val item = ItemStack(material)
+        setItemDisplayName(item, text)
+        inv.setItem(pos, item)
     }
 
-    private fun addSpinItem(inv: Inventory, pos: Int = 0) {
-        val spinItem = ItemStack(Material.RECOVERY_COMPASS)
+    private fun setItemDisplayName(spinItem: ItemStack, name: String) {
         val meta = spinItem.itemMeta!!
-        meta.setDisplayName(messagesConfig.getColoredString("spin_the_wheel"))
+        meta.setDisplayName(name)
         spinItem.itemMeta = meta
-        inv.setItem(pos, spinItem)
     }
-
-    private fun addExitDoor(inv: Inventory) {
-        val door = ItemStack(Material.IRON_DOOR)
-        val meta = door.itemMeta!!
-        meta.setDisplayName(messagesConfig.getColoredString("exit_menu"))
-        door.itemMeta = meta
-        inv.setItem(inv.size - 1, door)
-    }
-
 
     private fun insertLootTableInInventory(
         lootTable: LootTable,
@@ -94,42 +78,6 @@ class Menu : Listener {
             loot.item.itemMeta = meta
             inv.setItem(index++, loot.item)
         }
-    }
-
-    private fun onMainMenuClick(event: InventoryClickEvent) {
-        event.isCancelled = true
-        when (event.currentItem?.itemMeta?.displayName) {
-            messagesConfig.getColoredString("spin_the_wheel") -> {
-                event.whoClicked.closeInventory()
-                openWheelGui(event.whoClicked as Player, LootTable())
-            }
-            messagesConfig.getColoredString("exit_menu") -> {
-                event.whoClicked.closeInventory()
-            }
-        }
-        return
-    }
-
-    private fun onLootTableMenuClick(event: InventoryClickEvent) {
-        event.isCancelled = true
-        if (event.currentItem?.itemMeta?.displayName == messagesConfig.getColoredString("exit_menu")) {
-            event.whoClicked.closeInventory()
-        }
-        return
-    }
-
-    private fun onWheelMenuClick(event: InventoryClickEvent) {
-        event.isCancelled = true
-        when (event.currentItem?.itemMeta?.displayName) {
-            messagesConfig.getColoredString("spin_the_wheel") -> {
-                event.inventory.remove(event.currentItem!!)
-                wheel!!.spin()
-            }
-            messagesConfig.getColoredString("exit_menu") -> {
-                event.whoClicked.closeInventory()
-            }
-        }
-        return
     }
 
 

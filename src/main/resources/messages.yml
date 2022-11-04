@@ -16,8 +16,23 @@ invalid_parameter: "&cInvalid parameters given."
 luckywheel_command_no_permission: "&cYou don't have the permissions required to use that command."
 
 # Menu messages
+menu_title_prefix: "&2&l&nLucky Wheel&r - "
 main_menu_title: "&3Main menu"
-loottable_menu_title: "&3LootTable menu"
+loot_table_menu_title: "&3LootTable menu"
 wheel_menu_title: "&3Spin the wheel!"
+go_back_menu: "&cGo back"
 exit_menu: "&cExit menu"
 spin_the_wheel: "&5&l&oSpin the wheel!"
+show_loot_table: "&3&lShow LootTable"
+
+# Broadcast messages
+win_sentence: "{name} has won {amount}x{item} which had {probability} of probability"
+
+
+# Player messages
+items_sent_to_enderchest: "&cThere is not enough space in your inventory, {items} was sent to the enderchest"
+dropped_items: "&cThere is not enough space in your inventory/enderchest, {items} is on the ground!"
+
+
+# Error
+missing_string: missing string? owo

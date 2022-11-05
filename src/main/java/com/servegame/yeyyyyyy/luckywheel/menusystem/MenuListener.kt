@@ -3,7 +3,9 @@ package com.servegame.yeyyyyyy.luckywheel.menusystem
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 import com.servegame.yeyyyyyy.luckywheel.core.Wheel
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
+import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import com.servegame.yeyyyyyy.luckywheel.extensions.spawnParticles
+import com.servegame.yeyyyyyy.luckywheel.extensions.toText
 import com.servegame.yeyyyyyy.luckywheel.utils.ParticleEffect
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -12,6 +14,7 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 
 class MenuListener : Listener {
@@ -53,6 +56,28 @@ class MenuListener : Listener {
             }
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
+            }
+            else -> {
+                val player = event.whoClicked
+                if (event.currentItem != null && player.hasPermission("luckywheel.loottables.edit") && event.isRightClick && event.clickedInventory?.type != InventoryType.PLAYER) {
+                    val lootTable: LootTable = player.getMetadata("lootTable")[0].value() as LootTable
+
+                    val itemWasRemoved = lootTable.remove(event.currentItem as ItemStack)
+
+                    if (itemWasRemoved) {
+                        player.sendMessage(
+                            messagesConfig.getColoredString("removed_item_from_loot_table")
+                                .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
+                        )
+                        val menu = Menu()
+                        menu.openLootTableGui(event.whoClicked as Player, lootTable)
+                    } else {
+                        player.sendMessage(
+                            messagesConfig.getColoredString("item_from_loot_table_could_not_be_removed")
+                                .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
+                        )
+                    }
+                }
             }
         }
         return

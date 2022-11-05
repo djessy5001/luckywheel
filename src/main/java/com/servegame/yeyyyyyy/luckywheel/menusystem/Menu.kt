@@ -25,8 +25,9 @@ class Menu {
 
     fun openLootTableGui(player: Player, lootTable: LootTable) {
         val inv = Bukkit.createInventory(null, lootTable.inventorySize, MenuTitle.LootTableMenu.title)
-        insertLootTableInInventory(lootTable, inv)
-
+        insertLootTableInInventory(lootTable, inv, player)
+        val lootTableMeta = FixedMetadataValue(LuckyWheel.plugin, lootTable)
+        player.setMetadata("lootTable", lootTableMeta)
         addItem(MenuItem.goBack.copy(pos = inv.size - 2), inv)
         addItem(MenuItem.exitMenu.copy(pos = inv.size - 1), inv)
         player.openInventory(inv)
@@ -67,13 +68,15 @@ class Menu {
 
     private fun insertLootTableInInventory(
         lootTable: LootTable,
-        inv: Inventory
+        inv: Inventory,
+        player: Player
     ) {
         var index = 0
         lootTable.forEach { loot ->
             val meta = loot.item.itemMeta!!
             meta.lore = mutableListOf(
-                messagesConfig.getColoredString("common_probability") + lootTable.getProbabilityOfLootFormatted(loot)
+                messagesConfig.getColoredString("common_probability") + lootTable.getProbabilityOfLootFormatted(loot),
+                if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("right_click_to_remove") else ""
             )
             loot.item.itemMeta = meta
             inv.setItem(index++, loot.item)

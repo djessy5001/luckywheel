@@ -24,6 +24,7 @@ go_back_menu: "&cGo back"
 exit_menu: "&cExit menu"
 spin_the_wheel: "&5&l&oSpin the wheel!"
 show_loot_table: "&3&lShow LootTable"
+right_click_to_remove: "&4Press &lRight Click&r&4 to remove!"
 
 # Broadcast messages
 win_sentence: "{name} has won {amount}x{item} which had {probability} of probability"
@@ -32,7 +33,8 @@ win_sentence: "{name} has won {amount}x{item} which had {probability} of probabi
 # Player messages
 items_sent_to_enderchest: "&cThere is not enough space in your inventory, {items} was sent to the enderchest"
 dropped_items: "&cThere is not enough space in your inventory/enderchest, {items} is on the ground!"
-
+removed_item_from_loot_table: "&2{item} was removed from LootTable {lootTable} successfully"
+item_from_loot_table_could_not_be_removed: "&c{item} from LootTable {lootTable} could not be removed!"
 
 # Error
 missing_string: missing string? owo

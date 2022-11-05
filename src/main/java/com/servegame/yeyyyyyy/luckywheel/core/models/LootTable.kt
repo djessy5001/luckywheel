@@ -22,7 +22,8 @@ class LootTable (
         Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
         Loot(ItemStack(Material.PACKED_ICE, 64))
     ),
-    override val size: Int = loots.size
+    override val size: Int = loots.size,
+    var name: String = "default"
 ) : MutableCollection<Loot> {
     private val maxLootTableSize = 52
     private val totalWeight
@@ -117,6 +118,10 @@ class LootTable (
 
     override fun remove(element: Loot): Boolean {
         return loots.remove(element)
+    }
+
+    fun remove(item: ItemStack): Boolean {
+        return loots.remove(loots.find { it.item.isSimilar(item) })
     }
 
     fun getProbabilityOfLootFormatted(loot: Loot): String {

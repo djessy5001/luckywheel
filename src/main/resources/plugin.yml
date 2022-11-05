@@ -19,3 +19,6 @@ permissions:
   luckywheel.command:
     default: true
     description: "Access to the '/luckywheel' command"
+  luckywheel.loottables.edit:
+    default: op
+    description: "Enable the user to edit the LootTables (admin)"

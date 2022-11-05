@@ -29,3 +29,7 @@ fun Player.spawnParticles(particleEffect: ParticleEffect) {
 fun Array<ItemStack>.listItems(): String {
     return this.joinToString { item -> "${item.amount}x${item.itemMeta?.localizedName}" }
 }
+
+fun ItemStack.toText(): String {
+    return this.amount.toString() + "x" + this.type.name
+}

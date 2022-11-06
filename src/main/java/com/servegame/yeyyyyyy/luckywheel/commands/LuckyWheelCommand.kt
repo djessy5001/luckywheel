@@ -26,10 +26,7 @@ class LuckyWheelCommand : CommandExecutor {
             send(player, "invalid_parameter")
             return false
         }
-        // Do something
-        val menu = Menu()
-//        menu.openLootTableGui(player, LootTable())
-        menu.openMainMenuGui(player)
+        Menu.openMainMenuGui(player)
         return true
     }
 

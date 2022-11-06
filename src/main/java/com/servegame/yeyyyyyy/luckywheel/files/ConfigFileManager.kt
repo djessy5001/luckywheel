@@ -1,20 +1,5 @@
 package com.servegame.yeyyyyyy.luckywheel.files
 
-import org.bukkit.configuration.file.FileConfiguration
+import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 
-class ConfigFileManager: FileManager {
-    init {
-        saveDefaultConfig()
-    }
-    override fun saveDefaultConfig() {
-        TODO("Not yet implemented")
-    }
-
-    override fun getConfig(): FileConfiguration {
-        TODO("Not yet implemented")
-    }
-
-    override fun reloadConfig() {
-        TODO("Not yet implemented")
-    }
-}
+class ConfigFileManager(plugin: LuckyWheel) : FileManager(plugin, "config.yml")

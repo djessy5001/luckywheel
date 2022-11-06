@@ -6,6 +6,7 @@ import kotlin.math.ceil
 import kotlin.random.Random
 
 class LootTable (
+    var name: String = "default",
     private var loots: MutableList<Loot> = mutableListOf(
         Loot(ItemStack(Material.DIAMOND_SWORD), 0.2),
         Loot(ItemStack(Material.DIRT, 64)),
@@ -21,10 +22,9 @@ class LootTable (
         Loot(ItemStack(Material.STONE_SHOVEL, 1)),
         Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
         Loot(ItemStack(Material.PACKED_ICE, 64))
-    ),
-    override val size: Int = loots.size,
-    var name: String = "default"
+    )
 ) : MutableCollection<Loot> {
+    override val size: Int = loots.size
     private val maxLootTableSize = 52
     private val totalWeight
         get() = loots.fold(0.0) { acc, loot -> acc + loot.weight }

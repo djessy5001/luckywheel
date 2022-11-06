@@ -1,7 +1,6 @@
 package com.servegame.yeyyyyyy.luckywheel.commands
 
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
-import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -12,9 +11,8 @@ class TestCommand : CommandExecutor {
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         logger.info("total proba")
-        val lootTable = LootTable()
+        val lootTable = LuckyWheel.plugin.lootTablesFileManager.getLootTable("default")!!
         logger.info(lootTable.getRandomLoot().toString())
-        // Do something
 
         return true
     }

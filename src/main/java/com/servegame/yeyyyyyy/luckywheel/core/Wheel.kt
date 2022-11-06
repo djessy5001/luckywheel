@@ -14,7 +14,7 @@ import org.bukkit.inventory.ItemStack
 import org.bukkit.scheduler.BukkitScheduler
 import org.bukkit.scheduler.BukkitTask
 
-class Wheel(val lootTable: LootTable, val menu: Menu, val inventory: Inventory, val player: Player) {
+class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Player) {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
     val itemRow = mutableListOf<ItemStack>()
     private var scheduler: BukkitScheduler = Bukkit.getScheduler()
@@ -53,7 +53,7 @@ class Wheel(val lootTable: LootTable, val menu: Menu, val inventory: Inventory, 
     }
 
     private fun paintWheelRow() {
-        menu.paintWheelRow(inventory, this)
+        Menu.paintWheelRow(inventory, this)
     }
 
     private fun givePrize() {

@@ -2,6 +2,8 @@ package com.servegame.yeyyyyyy.luckywheel
 
 import com.servegame.yeyyyyyy.luckywheel.commands.LuckyWheelCommand
 import com.servegame.yeyyyyyy.luckywheel.commands.TestCommand
+import com.servegame.yeyyyyyy.luckywheel.files.ConfigFileManager
+import com.servegame.yeyyyyyy.luckywheel.files.LootTablesFileManager
 import com.servegame.yeyyyyyy.luckywheel.files.MessagesFileManager
 import com.servegame.yeyyyyyy.luckywheel.menusystem.MenuListener
 import org.bukkit.Bukkit
@@ -14,6 +16,8 @@ class LuckyWheel : JavaPlugin() {
     }
 
     lateinit var messagesFileManager: MessagesFileManager
+    lateinit var configFileManager: ConfigFileManager
+    lateinit var lootTablesFileManager: LootTablesFileManager
     private val prefix = ChatColor.translateAlternateColorCodes('&', "&8[&2&lLuckyWheel&8] ")
 
     override fun onEnable() {
@@ -22,7 +26,6 @@ class LuckyWheel : JavaPlugin() {
         plugin = this
 
         if (!checkVersionCompatible()) return
-        loadConfigFile()
         loadFileManagers()
         enableCommands()
         enableListeners()
@@ -44,13 +47,11 @@ class LuckyWheel : JavaPlugin() {
         return true
     }
 
-    private fun loadConfigFile() {
-        config.options().copyDefaults()
-        saveDefaultConfig()
-    }
 
     private fun loadFileManagers() {
-        this.messagesFileManager = MessagesFileManager(this)
+        messagesFileManager = MessagesFileManager(this)
+        configFileManager = ConfigFileManager(this)
+        lootTablesFileManager = LootTablesFileManager(this)
     }
 
     private fun enableCommands() {

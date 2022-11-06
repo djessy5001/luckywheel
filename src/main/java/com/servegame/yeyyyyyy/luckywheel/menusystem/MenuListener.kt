@@ -14,11 +14,13 @@ import org.bukkit.entity.Player
 import org.bukkit.event.EventHandler
 import org.bukkit.event.Listener
 import org.bukkit.event.inventory.InventoryClickEvent
+import org.bukkit.event.inventory.InventoryCloseEvent
 import org.bukkit.event.inventory.InventoryType
 import org.bukkit.inventory.ItemStack
 
 class MenuListener : Listener {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
+    val lootTablesFileManager = LuckyWheel.plugin.lootTablesFileManager
 
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
@@ -29,16 +31,22 @@ class MenuListener : Listener {
         }
     }
 
+    @EventHandler
+    fun onInventoryClose(event: InventoryCloseEvent) {
+        if (event.view.title.startsWith(MenuTitle.titlePrefix)) {
+            event.player.removeMetadata("luckywheel_wheel", LuckyWheel.plugin)
+            event.player.removeMetadata("luckywheel_loot_table", LuckyWheel.plugin)
+        }
+    }
+
     private fun onMainMenuClick(event: InventoryClickEvent) {
         event.isCancelled = true
         when (event.currentItem?.itemMeta?.displayName) {
             MenuOptions.SpinTheWheel.option -> {
-                val menu = Menu()
-                menu.openWheelGui(event.whoClicked as Player, LootTable())
+                Menu.openWheelGui(event.whoClicked as Player, lootTablesFileManager.getLootTable("default")!!)
             }
             MenuOptions.ShowLootTable.option -> {
-                val menu = Menu()
-                menu.openLootTableGui(event.whoClicked as Player, LootTable())
+                Menu.openLootTableGui(event.whoClicked as Player, lootTablesFileManager.getLootTable("default")!!)
             }
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
@@ -51,36 +59,38 @@ class MenuListener : Listener {
         event.isCancelled = true
         when (event.currentItem?.itemMeta?.displayName) {
             MenuOptions.GoBack.option -> {
-                val menu = Menu()
-                menu.openMainMenuGui(event.whoClicked as Player)
+                Menu.openMainMenuGui(event.whoClicked as Player)
             }
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
             else -> {
-                val player = event.whoClicked
-                if (event.currentItem != null && player.hasPermission("luckywheel.loottables.edit") && event.isRightClick && event.clickedInventory?.type != InventoryType.PLAYER) {
-                    val lootTable: LootTable = player.getMetadata("lootTable")[0].value() as LootTable
-
-                    val itemWasRemoved = lootTable.remove(event.currentItem as ItemStack)
-
-                    if (itemWasRemoved) {
-                        player.sendMessage(
-                            messagesConfig.getColoredString("removed_item_from_loot_table")
-                                .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
-                        )
-                        val menu = Menu()
-                        menu.openLootTableGui(event.whoClicked as Player, lootTable)
-                    } else {
-                        player.sendMessage(
-                            messagesConfig.getColoredString("item_from_loot_table_could_not_be_removed")
-                                .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
-                        )
-                    }
-                }
+                handleOtherLootTableClick(event)
             }
         }
         return
+    }
+
+    private fun handleOtherLootTableClick(event: InventoryClickEvent) {
+        val player = event.whoClicked
+        if (event.currentItem != null && player.hasPermission("luckywheel.loottables.edit") && event.isRightClick && event.clickedInventory?.type != InventoryType.PLAYER) {
+            val lootTable: LootTable = player.getMetadata("luckywheel_loot_table")[0].value() as LootTable
+            val itemWasRemoved = lootTable.remove(event.currentItem as ItemStack)
+            lootTablesFileManager.updateLootTable(lootTable)
+
+            if (itemWasRemoved) {
+                player.sendMessage(
+                    messagesConfig.getColoredString("removed_item_from_loot_table")
+                        .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
+                )
+                Menu.openLootTableGui(event.whoClicked as Player, lootTable)
+            } else {
+                player.sendMessage(
+                    messagesConfig.getColoredString("item_from_loot_table_could_not_be_removed")
+                        .replace("{item}", event.currentItem!!.toText()).replace("{lootTable}", lootTable.name)
+                )
+            }
+        }
     }
 
     private fun onWheelMenuClick(event: InventoryClickEvent) {
@@ -97,8 +107,7 @@ class MenuListener : Listener {
                 player.playSound(player, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)
             }
             MenuOptions.GoBack.option -> {
-                val menu = Menu()
-                menu.openMainMenuGui(event.whoClicked as Player)
+                Menu.openMainMenuGui(event.whoClicked as Player)
             }
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()

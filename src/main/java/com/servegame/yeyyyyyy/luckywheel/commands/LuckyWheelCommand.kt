@@ -15,12 +15,12 @@ class LuckyWheelCommand : CommandExecutor {
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
             logger.info(ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("player_only_command")!!))
-            return false
+            return true
         }
         val player: Player = sender
         if (!player.hasPermission("luckywheel.command")) {
             send(player, "luckywheel_command_no_permission")
-            return false
+            return true
         }
         if (args.isNotEmpty()) {
             send(player, "invalid_parameter")

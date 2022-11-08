@@ -42,10 +42,10 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
         } else {
             if (counter % 3 == 0) itemRow.add(itemRow.removeFirst())
         }
-        if (counter > 60 && itemRow[4].isSimilar(prize?.first?.item)) {
+        if (counter > 60 && itemRow[4] == prize?.first?.item) {
             task?.cancel()
             scheduler.runTaskLater(LuckyWheel.plugin, Runnable {
-                itemRow.replaceAll { if (it == itemRow[4]) it else ItemStack(Material.LIME_STAINED_GLASS_PANE) }
+                hideOtherItems()
                 paintWheelRow()
             }, 7L)
             givePrize()
@@ -54,6 +54,12 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
 
     private fun paintWheelRow() {
         Menu.paintWheelRow(inventory, this)
+    }
+
+    private fun hideOtherItems() {
+        itemRow.clear()
+        fillItemRow()
+        itemRow[4] = prize!!.first.item
     }
 
     private fun givePrize() {

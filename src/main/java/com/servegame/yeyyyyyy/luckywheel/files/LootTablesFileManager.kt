@@ -5,11 +5,17 @@ import com.google.gson.GsonBuilder
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.core.models.serializable.LootTableMapSerializable
+import com.servegame.yeyyyyyy.luckywheel.exceptions.LootTableNotFoundException
 import com.servegame.yeyyyyyy.luckywheel.utils.JsonReader
 import java.io.File
 import java.nio.file.Files
 
-class LootTablesFileManager(val plugin: LuckyWheel) {
+/**
+ * This class is used to manage the [LootTable]s and store them in the json file loot-tables.json
+ *
+ * * This FileManager does not extend the [FileManager] class, since it does not use YAML configuration files
+ */
+class LootTablesFileManager(private val plugin: LuckyWheel) {
     private val fileName = "loot-tables.json"
     private var data: Map<String, LootTable>? = null
     private var jsonFile: File? = null
@@ -20,10 +26,11 @@ class LootTablesFileManager(val plugin: LuckyWheel) {
 
     /**
      * Get a [LootTable] that matches the name given.
-     * @return The [LootTable] that matches the name, or null if no one matches it.
+     * @return The [LootTable] that matches the name.
+     * @throws [LootTableNotFoundException] when no [LootTable] matching [name] is found.
      */
-    fun getLootTable(name: String): LootTable? {
-        return getData()[name]
+    fun getLootTable(name: String): LootTable {
+        return getData()[name] ?: throw LootTableNotFoundException("No LootTable found for name '$name'")
     }
 
     /**
@@ -34,24 +41,27 @@ class LootTablesFileManager(val plugin: LuckyWheel) {
     }
 
 
-    fun addLootTable(lootTable: LootTable) {
-        val mutableData = getData().toMutableMap()
-        mutableData[lootTable.name] = lootTable
-        setData(mutableData.toMap())
+    /**
+     * Adds a LootTable to the data and saves.
+     * @return true if the table was inserted or false if the list is full (máx 51 LootTables)
+     */
+    fun addLootTable(lootTable: LootTable): Boolean {
+        val lootTables = getData().toMutableMap()
+        if (lootTables.size >= 51) return false
+        lootTables[lootTable.name] = lootTable
+        setData(lootTables.toMap())
         saveData()
+        return true
     }
 
     /**
-     * Updates a [LootTable] from the collection and saves
-     * @return `true` if the [LootTable] existed and was replaced, or `false` if it didn't exist and thus was not
-     * replaced.
+     * Updates a [LootTable] from the collection and saves.
      */
-    fun updateLootTable(lootTable: LootTable): Boolean {
+    fun updateLootTable(lootTable: LootTable) {
         val map = getData().toMutableMap()
-        val wasRemoved = map.replace(lootTable.name, lootTable).isNullOrEmpty()
+        map.replace(lootTable.name, lootTable).isNullOrEmpty()
         setData(map.toMap())
         saveData()
-        return wasRemoved
     }
 
     /**
@@ -63,7 +73,7 @@ class LootTablesFileManager(val plugin: LuckyWheel) {
     }
 
     /**
-     * Remove a [LootTable] from data given its name and save.
+     * Removes a [LootTable] from data given its name and save.
      */
     fun removeLootTable(name: String) {
         val mutableData = data!!.toMutableMap()
@@ -72,6 +82,9 @@ class LootTablesFileManager(val plugin: LuckyWheel) {
         saveData()
     }
 
+    /**
+     * Saves the LootTable configuration to the json file
+     */
     fun saveData() {
         val lootTableSerializable = LootTableMapSerializable.fromLootTableMap(getData())
         val gson = GsonBuilder().setPrettyPrinting().create()
@@ -79,6 +92,9 @@ class LootTablesFileManager(val plugin: LuckyWheel) {
         Files.write(jsonFile!!.toPath(), json.toByteArray())
     }
 
+    /**
+     * Returns the data as [Map]<[String], [LootTable]>
+     */
     fun getData(): Map<String, LootTable> {
         if (data == null) {
             reloadConfig()

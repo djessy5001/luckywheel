@@ -33,3 +33,12 @@ fun Array<ItemStack>.listItems(): String {
 fun ItemStack.toText(): String {
     return this.amount.toString() + "x" + this.type.name
 }
+
+/**
+ * Returns true if the given item matches this instance's [ItemStack.type], [ItemStack.amount] and [ItemStack.getEnchantments]
+ */
+fun ItemStack.matches(item: ItemStack): Boolean {
+    return this.type == item.type && this.amount == item.amount && this.enchantments == item.enchantments
+}
+
+fun Player.currentLootTable(): String = this.getMetadata("luckywheel_loot_table")[0].value().toString()

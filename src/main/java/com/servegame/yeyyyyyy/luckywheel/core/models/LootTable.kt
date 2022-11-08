@@ -1,8 +1,10 @@
 package com.servegame.yeyyyyyy.luckywheel.core.models
 
+import com.servegame.yeyyyyyy.luckywheel.exceptions.LootTableNotFoundException
+import com.servegame.yeyyyyyy.luckywheel.extensions.matches
+import com.servegame.yeyyyyyy.luckywheel.extensions.toText
 import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
-import kotlin.math.ceil
 import kotlin.random.Random
 
 class LootTable (
@@ -25,14 +27,14 @@ class LootTable (
     )
 ) : MutableCollection<Loot> {
     override val size: Int = loots.size
-    private val maxLootTableSize = 52
+    private final val MAX_LOOT_SIZE = 51
     private val totalWeight
         get() = loots.fold(0.0) { acc, loot -> acc + loot.weight }
     val inventorySize
-        get() = ceil((loots.size + 2) / 9.0).toInt() * 9
+        get() = size
 
     init {
-        loots = loots.subList(0, minOf(maxLootTableSize - 1, loots.size))
+        loots = loots.subList(0, minOf(MAX_LOOT_SIZE - 1, loots.size))
     }
 
     fun getRandomLoot(): Pair<Loot, String> {
@@ -69,6 +71,14 @@ class LootTable (
         return getProbabilityOfLootAt(index)
     }
 
+    /**
+     * Returns a [Loot] from this [LootTable] matching the given [ItemStack]'s data (excepting metadata)
+     */
+    fun getLoot(item: ItemStack): Loot {
+        return this.find { loot -> loot.item.matches(item) }
+            ?: throw LootTableNotFoundException("No matching loot found in LootTable '$name' for item '${item.toText()}'")
+    }
+
     override fun contains(element: Loot): Boolean {
         return loots.contains(element)
     }
@@ -83,14 +93,14 @@ class LootTable (
      * @return `true` if the item was added, or `false` if `maxLootTableSize` has been reached
      */
     override fun add(element: Loot): Boolean {
-        if (loots.size >= maxLootTableSize) return false
+        if (loots.size >= MAX_LOOT_SIZE) return false
         loots.add(element)
         return true
     }
 
     override fun addAll(elements: Collection<Loot>): Boolean {
         for(loot in elements) {
-            if (loots.size >= maxLootTableSize) return false
+            if (loots.size >= MAX_LOOT_SIZE) return false
             loots.add(loot)
         }
         return true
@@ -105,7 +115,7 @@ class LootTable (
     }
 
     override fun iterator(): MutableIterator<Loot> {
-        return loots.map { loot -> loot.copy() }.toMutableList().iterator()
+        return loots.toMutableList().iterator()
     }
 
     override fun retainAll(elements: Collection<Loot>): Boolean {
@@ -121,7 +131,7 @@ class LootTable (
     }
 
     fun remove(item: ItemStack): Boolean {
-        return loots.remove(loots.find { it.item.isSimilar(item) })
+        return loots.remove(loots.find { loot -> loot.item.matches(item) })
     }
 
     fun getProbabilityOfLootFormatted(loot: Loot): String {

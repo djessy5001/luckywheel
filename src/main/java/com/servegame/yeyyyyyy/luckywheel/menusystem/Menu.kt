@@ -42,12 +42,14 @@ class Menu {
                     ), inv
                 )
             }
+            addItem(MenuItem.goBack.copy(pos = invSize - 2), inv)
+            addItem(MenuItem.exitMenu.copy(pos = invSize - 1), inv)
 
             player.openInventory(inv)
         }
 
         fun openLootTableGui(player: Player, lootTable: LootTable) {
-            val invSize = getNearestCeilMultipleOfNine(lootTable.inventorySize + 3)
+            val invSize = getNearestCeilMultipleOfNine(lootTable.size + 3)
             val inv = Bukkit.createInventory(null, invSize, MenuTitle.LootTableMenu.title)
             insertLootTableInInventory(lootTable, inv, player)
 
@@ -91,6 +93,8 @@ class Menu {
             val itemClone = loot.item.clone()
             val meta = itemClone.itemMeta!!
             meta.lore = listOf(
+                messagesConfig.getColoredString("common_probability")
+                    .replace("{percentage}", lootTable.getProbabilityOfLootFormatted(loot)),
                 messagesConfig.getColoredString("current_weight").replace("{weight}", loot.weight.toString()),
                 messagesConfig.getColoredString("left_click_to_accept"),
                 messagesConfig.getColoredString("right_click_to_undo")
@@ -129,7 +133,8 @@ class Menu {
             lootTable.forEach { loot ->
                 val meta = loot.item.itemMeta!!
                 meta.lore = mutableListOf(
-                    messagesConfig.getColoredString("common_probability") + lootTable.getProbabilityOfLootFormatted(loot),
+                    messagesConfig.getColoredString("common_probability")
+                        .replace("{percentage}", lootTable.getProbabilityOfLootFormatted(loot)),
                     if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("right_click_to_remove") else ""
                 )
                 val lootCopy = loot.copy(item = loot.item.clone())

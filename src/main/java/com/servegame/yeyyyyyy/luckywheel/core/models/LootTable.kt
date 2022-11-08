@@ -26,12 +26,11 @@ class LootTable (
         Loot(ItemStack(Material.PACKED_ICE, 64))
     )
 ) : MutableCollection<Loot> {
-    override val size: Int = loots.size
+    override val size: Int get() = loots.size
     private final val MAX_LOOT_SIZE = 51
     private val totalWeight
         get() = loots.fold(0.0) { acc, loot -> acc + loot.weight }
-    val inventorySize
-        get() = size
+
 
     init {
         loots = loots.subList(0, minOf(MAX_LOOT_SIZE - 1, loots.size))

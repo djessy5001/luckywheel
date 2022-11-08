@@ -4,10 +4,7 @@ import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 import com.servegame.yeyyyyyy.luckywheel.core.Wheel
 import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
-import com.servegame.yeyyyyyy.luckywheel.extensions.currentLootTable
-import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
-import com.servegame.yeyyyyyy.luckywheel.extensions.spawnParticles
-import com.servegame.yeyyyyyy.luckywheel.extensions.toText
+import com.servegame.yeyyyyyy.luckywheel.extensions.*
 import com.servegame.yeyyyyyy.luckywheel.utils.ParticleEffect
 import org.bukkit.Material
 import org.bukkit.Particle
@@ -40,6 +37,8 @@ class MenuListener : Listener {
     }
 
     private fun onMainMenuClick(event: InventoryClickEvent) {
+        if (event.clickedInventory?.type == InventoryType.PLAYER) return
+
         when (event.currentItem?.itemMeta?.displayName) {
             MenuOptions.SpinTheWheel.option -> {
                 Menu.openWheelGui(event.whoClicked as Player, lootTablesFileManager.getLootTable("default"))
@@ -54,6 +53,7 @@ class MenuListener : Listener {
     }
 
     private fun onLootTableListMenuClick(event: InventoryClickEvent) {
+        if (event.clickedInventory?.type == InventoryType.PLAYER) return
         if (event.currentItem == null) return
         when (event.currentItem!!.itemMeta?.displayName) {
             MenuOptions.GoBack.option -> {
@@ -130,6 +130,7 @@ class MenuListener : Listener {
     }
 
     private fun addItemToLootTable(lootTable: LootTable, event: InventoryClickEvent): String {
+        if (lootTable.any { loot -> loot.item.matches(event.currentItem!!) }) return "item_already_in_loot_table"
         val itemWasAdded = lootTable.add(Loot(event.currentItem as ItemStack, 1.0))
         lootTablesFileManager.updateLootTable(lootTable)
         if (itemWasAdded) Menu.openLootTableGui(event.whoClicked as Player, lootTable)
@@ -137,6 +138,7 @@ class MenuListener : Listener {
     }
 
     private fun onWheelMenuClick(event: InventoryClickEvent) {
+        if (event.clickedInventory?.type == InventoryType.PLAYER) return
         when (event.currentItem?.itemMeta?.displayName) {
             MenuOptions.SpinTheWheel.option -> {
                 event.inventory.remove(event.currentItem!!)
@@ -158,7 +160,8 @@ class MenuListener : Listener {
     }
 
     private fun onEditItemWeightMenuClick(event: InventoryClickEvent) {
-        if (event.currentItem == null && (event.isLeftClick || event.isRightClick)) return
+        if (event.currentItem == null && !(event.isLeftClick || event.isRightClick)) return
+        if (event.clickedInventory?.type == InventoryType.PLAYER) return
 
         when (event.currentItem) {
             event.inventory.getItem(0) -> modifyItemWeight(event, -1.0)

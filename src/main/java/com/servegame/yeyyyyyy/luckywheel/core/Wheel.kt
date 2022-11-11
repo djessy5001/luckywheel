@@ -6,7 +6,10 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import com.servegame.yeyyyyyy.luckywheel.extensions.listItems
 import com.servegame.yeyyyyyy.luckywheel.menusystem.Menu
-import org.bukkit.*
+import com.servegame.yeyyyyyy.luckywheel.utils.randomFireworkEffect
+import org.bukkit.Bukkit
+import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Firework
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
@@ -88,17 +91,19 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
     }
 
     private fun showWinEffects() {
-        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, 1f)
+        val luck = lootTable.getLuck(prize!!.first)
+        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, (0.until(20).random() / 10).toFloat())
         scheduler.runTask(LuckyWheel.plugin, Runnable {
-            val firework = player.world.spawn(player.location, Firework::class.java)
-            firework.maxLife = 10
-            val meta = firework.fireworkMeta
-            meta.addEffect(
-                FireworkEffect.builder().trail(true).withColor(Color.GREEN).withFlicker()
-                    .with(FireworkEffect.Type.BURST)
-                    .build()
-            )
-            firework.fireworkMeta = meta
+            for (i in 0.until(luck)) {
+                val firework = player.world.spawn(player.location, Firework::class.java)
+                firework.maxLife = 10
+                val meta = firework.fireworkMeta
+                meta.addEffect(
+                    randomFireworkEffect()
+                )
+                firework.fireworkMeta = meta
+                Thread.sleep(10L)
+            }
         })
     }
 

@@ -14,7 +14,7 @@ fun FileConfiguration.getColoredString(string: String): String {
     } catch (ex: NullPointerException) {
         LuckyWheel.plugin.logger.warning("String not found: $string")
         ex.printStackTrace()
-        ChatColor.translateAlternateColorCodes('&', this.getString("missing_string")!!)
+        string
     }
 }
 
@@ -42,3 +42,4 @@ fun ItemStack.matches(item: ItemStack): Boolean {
 }
 
 fun Player.currentLootTable(): String = this.getMetadata("luckywheel_loot_table")[0].value().toString()
+

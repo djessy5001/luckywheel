@@ -42,7 +42,7 @@ class LootTablesFileManager(private val plugin: LuckyWheel) {
 
 
     /**
-     * Adds a LootTable to the data and saves.
+     * Adds a LootTable and saves.
      * @return true if the table was inserted or false if the list is full (máx 51 LootTables)
      */
     fun addLootTable(lootTable: LootTable): Boolean {
@@ -65,15 +65,14 @@ class LootTablesFileManager(private val plugin: LuckyWheel) {
     }
 
     /**
-     * Removes a [LootTable] from data and save.
+     * Removes a [LootTable] from data and saves.
      */
     fun removeLootTable(lootTable: LootTable) {
         removeLootTable(lootTable.name)
-        saveData()
     }
 
     /**
-     * Removes a [LootTable] from data given its name and save.
+     * Removes a [LootTable] from data given its name and saves.
      */
     fun removeLootTable(name: String) {
         val mutableData = data!!.toMutableMap()

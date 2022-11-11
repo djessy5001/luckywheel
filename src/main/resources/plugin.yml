@@ -11,6 +11,11 @@ commands:
     usage: /<command>
     permission: luckywheel.command
     aliases: [ lw ]
+  luckywheel.create:
+    description: Create a new LootTable with name <name>
+    usage: /luckywheel create <name> or /lwc <name>
+    permission: luckywheel.loottables.edit
+    aliases: [ lwc ]
   test:
     description: Multipurpose test command
     usage: /<command>
@@ -22,3 +27,6 @@ permissions:
   luckywheel.loottables.edit:
     default: op
     description: "Enable the user to edit the LootTables (admin)"
+  luckywheel.loottables.bypass_cooldown:
+    default: false
+    description: "Enable the user to bypass the LootTables cooldown"

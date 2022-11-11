@@ -17,8 +17,8 @@ import org.bukkit.metadata.FixedMetadataValue
 class Menu {
 
     companion object {
-        val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
-        val lootTableFileManager = LuckyWheel.plugin.lootTablesFileManager
+        private val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
+        private val lootTableFileManager = LuckyWheel.plugin.lootTablesFileManager
         fun openMainMenuGui(player: Player) {
             val inv = Bukkit.createInventory(null, 9, MenuTitle.MainMenu.title)
 
@@ -32,15 +32,8 @@ class Menu {
             val lootTables = lootTableFileManager.getAllLootTables()
             val invSize = getNearestCeilMultipleOfNine(lootTables.size + 2)
             val inv = Bukkit.createInventory(null, invSize, MenuTitle.LootTableListMenu.title)
-            var i = 0
-            lootTables.forEach { lootTable ->
-                addItem(
-                    MenuItem(
-                        Material.values()[167 + i],
-                        ChatColor.translateAlternateColorCodes('&', "&2" + lootTable.name),
-                        i++
-                    ), inv
-                )
+            for (i in lootTables.indices) {
+                createLootTableItem(i, lootTables[i], inv)
             }
             addItem(MenuItem.goBack.copy(pos = invSize - 2), inv)
             addItem(MenuItem.exitMenu.copy(pos = invSize - 1), inv)
@@ -76,7 +69,7 @@ class Menu {
             player.openInventory(inv)
         }
 
-        fun showEditItemWeightGui(player: Player, item: ItemStack) {
+        fun openEditItemWeightGui(player: Player, item: ItemStack) {
             val inv = Bukkit.createInventory(null, 9, MenuTitle.EditItemWeightMenu.title)
             addItem(MenuItem(Material.CRIMSON_PLANKS, MenuOptions.Sub1.option, 0), inv)
             addItem(MenuItem(Material.CRIMSON_STAIRS, MenuOptions.Sub01.option, 1), inv)
@@ -91,15 +84,14 @@ class Menu {
             val lootTable = lootTableFileManager.getLootTable(player.currentLootTable())
             val loot = lootTable.getLoot(item)
             val itemClone = loot.item.clone()
-            val meta = itemClone.itemMeta!!
-            meta.lore = listOf(
+            val lore = listOf(
                 messagesConfig.getColoredString("common_probability")
                     .replace("{percentage}", lootTable.getProbabilityOfLootFormatted(loot)),
                 messagesConfig.getColoredString("current_weight").replace("{weight}", loot.weight.toString()),
                 messagesConfig.getColoredString("left_click_to_accept"),
                 messagesConfig.getColoredString("right_click_to_undo")
             )
-            itemClone.itemMeta = meta
+            addItemLore(itemClone, lore)
             inv.setItem(4, itemClone)
             player.openInventory(inv)
         }
@@ -118,10 +110,31 @@ class Menu {
             inv.setItem(pos, item)
         }
 
-        private fun setItemDisplayName(spinItem: ItemStack, name: String) {
-            val meta = spinItem.itemMeta!!
+        private fun setItemDisplayName(item: ItemStack, name: String) {
+            val meta = item.itemMeta!!
             meta.setDisplayName(name)
-            spinItem.itemMeta = meta
+            item.itemMeta = meta
+        }
+
+        private fun addItemLore(item: ItemStack, lore: List<String>) {
+            val meta = item.itemMeta
+            meta!!.lore = lore
+            item.itemMeta = meta
+        }
+
+        private fun createLootTableItem(
+            index: Int,
+            lootTable: LootTable,
+            inv: Inventory
+        ) {
+            val item = ItemStack(Material.values()[167 + index])
+            setItemDisplayName(item, ChatColor.translateAlternateColorCodes('&', "&6" + lootTable.name))
+            val lore = listOf(
+                "",
+                messagesConfig.getColoredString("right_click_to_remove")
+            )
+            addItemLore(item, lore)
+            inv.setItem(index, item)
         }
 
         private fun insertLootTableInInventory(
@@ -135,6 +148,7 @@ class Menu {
                 meta.lore = mutableListOf(
                     messagesConfig.getColoredString("common_probability")
                         .replace("{percentage}", lootTable.getProbabilityOfLootFormatted(loot)),
+                    if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("left_click_to_edit_weight") else "",
                     if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("right_click_to_remove") else ""
                 )
                 val lootCopy = loot.copy(item = loot.item.clone())

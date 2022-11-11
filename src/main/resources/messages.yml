@@ -12,7 +12,7 @@ common_probability: "&6Probability: &f{percentage}"
 
 # LuckyWheelCommand messages
 player_only_command: "That command can only be executed by a player."
-invalid_parameter: "&cInvalid parameters given."
+invalid_parameter: "&cInvalid parameters given. Use the command as followed:"
 luckywheel_command_no_permission: "&cYou don't have the permissions required to use that command."
 
 # Menu messages
@@ -26,6 +26,7 @@ go_back_menu: "&cGo back"
 exit_menu: "&cExit menu"
 spin_the_wheel: "&5&l&oSpin the wheel!"
 show_loot_table: "&3&lShow LootTable list"
+left_click_to_edit_weight: "&2Press &2&lLeft Click&r&2 to edit the weight"
 right_click_to_remove: "&4Press &4&lRight Click&r&4 to remove!"
 left_click_to_add: "&2Press &2&lLeft Click&r&2 on an item in your inventory to add it to the Loot Table!"
 introduce_weight: '&2Please introduce the weight used to compute the probability of looting this item'
@@ -49,13 +50,12 @@ win_sentence: "{name} has won &5{amount}x{item}&r which had {probability} of pro
 
 
 # Player messages
-items_sent_to_enderchest: "&cThere is not enough space in your inventory, {items} was sent to the enderchest"
+items_sent_to_enderchest: "&6There is not enough space in your inventory, {items} was sent to the enderchest"
 dropped_items: "&cThere is not enough space in your inventory/enderchest, {items} is on the ground!"
-removed_item_from_loot_table: "&2{item} was removed from LootTable '{lootTable}' successfully"
+removed_item_from_loot_table: "&6{item} was removed from LootTable '{lootTable}' successfully"
 item_from_loot_table_could_not_be_removed: "&c{item} from LootTable '{lootTable}' could not be removed!"
 added_item_to_loot_table: "&2{item} was added to LootTable '{lootTable}' successfully"
 item_could_not_be_added_to_loot_table: "&c{item} could not be added to LootTable '{lootTable}' (max loot table size is 51)!"
 item_already_in_loot_table: "&c{item} is already in lootTable '{lootTable}'!"
-
-# Error
-missing_string: missing string? owo
+loot_table_created: "&2The LootTable '{lootTable}' has been created successfully!"
+loot_table_was_removed: "&6The LootTable '{lootTable}' was removed successfully!"

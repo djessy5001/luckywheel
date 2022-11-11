@@ -63,9 +63,21 @@ class MenuListener : Listener {
                 event.whoClicked.closeInventory()
             }
             else -> {
-                val lootTables = lootTablesFileManager.getAllLootTables()
-                val clickedLootTable = getClickedLootTable(event, lootTables)
-                Menu.openLootTableGui(event.whoClicked as Player, clickedLootTable)
+                if (event.isLeftClick) {
+                    val lootTables = lootTablesFileManager.getAllLootTables()
+                    val clickedLootTable = getClickedLootTable(event, lootTables)
+                    Menu.openLootTableGui(event.whoClicked as Player, clickedLootTable)
+                } else if (event.isRightClick) {
+                    val lootTables = lootTablesFileManager.getAllLootTables()
+                    val clickedLootTable = getClickedLootTable(event, lootTables)
+                    lootTablesFileManager.removeLootTable(clickedLootTable)
+                    val player = event.whoClicked as Player
+                    player.sendMessage(
+                        messagesConfig.getColoredString("loot_table_was_removed")
+                            .replace("{lootTable}", clickedLootTable.name)
+                    )
+                    Menu.openLootTableListGui(player)
+                }
             }
         }
     }
@@ -105,7 +117,7 @@ class MenuListener : Listener {
                     val oldWeight = lootTable.getLoot(event.currentItem!!).weight
                     val oldWeightMeta = FixedMetadataValue(LuckyWheel.plugin, oldWeight)
                     player.setMetadata("luckywheel_old_weight", oldWeightMeta)
-                    Menu.showEditItemWeightGui(player, event.currentItem!!)
+                    Menu.openEditItemWeightGui(player, event.currentItem!!)
                     textResponse = "introduce_weight"
                 } else if (event.isRightClick) {
                     textResponse = removeItemFromLootTable(lootTable, event)
@@ -124,17 +136,41 @@ class MenuListener : Listener {
 
     private fun removeItemFromLootTable(lootTable: LootTable, event: InventoryClickEvent): String {
         val itemWasRemoved = lootTable.remove(event.currentItem as ItemStack)
+        val player = event.whoClicked as Player
+        if (!itemWasRemoved) {
+            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            return "item_from_loot_table_could_not_be_removed"
+        }
         lootTablesFileManager.updateLootTable(lootTable)
-        if (itemWasRemoved) Menu.openLootTableGui(event.whoClicked as Player, lootTable)
-        return if (itemWasRemoved) "removed_item_from_loot_table" else "item_from_loot_table_could_not_be_removed"
+        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 0.8f)
+        Menu.openLootTableGui(event.whoClicked as Player, lootTable)
+        return "removed_item_from_loot_table"
     }
 
     private fun addItemToLootTable(lootTable: LootTable, event: InventoryClickEvent): String {
-        if (lootTable.any { loot -> loot.item.matches(event.currentItem!!) }) return "item_already_in_loot_table"
+        val player = event.whoClicked as Player
+        if (isAlreadyInLootTable(lootTable, event)) return "item_already_in_loot_table"
         val itemWasAdded = lootTable.add(Loot(event.currentItem as ItemStack, 1.0))
+        if (!itemWasAdded) {
+            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            return "item_could_not_be_added_to_loot_table"
+        }
         lootTablesFileManager.updateLootTable(lootTable)
-        if (itemWasAdded) Menu.openLootTableGui(event.whoClicked as Player, lootTable)
-        return if (itemWasAdded) "added_item_to_loot_table" else "item_could_not_be_added_to_loot_table"
+        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 1.8f)
+        Menu.openLootTableGui(event.whoClicked as Player, lootTable)
+        return "added_item_to_loot_table"
+    }
+
+    private fun isAlreadyInLootTable(
+        lootTable: LootTable,
+        event: InventoryClickEvent,
+        player: Player = event.whoClicked as Player
+    ): Boolean {
+        if (lootTable.any { loot -> loot.item.matches(event.currentItem!!) }) {
+            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            return true
+        }
+        return false
     }
 
     private fun onWheelMenuClick(event: InventoryClickEvent) {
@@ -206,7 +242,7 @@ class MenuListener : Listener {
         loot.weight = round(newWeight * 1000) / 1000
         player.sendMessage(messagesConfig.getColoredString("new_weight").replace("{weight}", loot.weight.toString()))
         lootTablesFileManager.updateLootTable(lootTable)
-        Menu.showEditItemWeightGui(player, item)
+        Menu.openEditItemWeightGui(player, item)
     }
 
 }

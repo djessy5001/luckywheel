@@ -3,28 +3,14 @@ package com.servegame.yeyyyyyy.luckywheel.core.models
 import com.servegame.yeyyyyyy.luckywheel.exceptions.LootTableNotFoundException
 import com.servegame.yeyyyyyy.luckywheel.extensions.matches
 import com.servegame.yeyyyyyy.luckywheel.extensions.toText
-import org.bukkit.Material
 import org.bukkit.inventory.ItemStack
+import kotlin.math.pow
 import kotlin.random.Random
 
-class LootTable (
+class LootTable(
     var name: String = "default",
-    private var loots: MutableList<Loot> = mutableListOf(
-        Loot(ItemStack(Material.DIAMOND_SWORD), 0.2),
-        Loot(ItemStack(Material.DIRT, 64)),
-        Loot(ItemStack(Material.GLASS_BOTTLE, 64), 0.8),
-        Loot(ItemStack(Material.DIAMOND_BLOCK, 2), 0.1),
-        Loot(ItemStack(Material.STONE_SHOVEL, 1)),
-        Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
-        Loot(ItemStack(Material.PACKED_ICE, 64)),
-        Loot(ItemStack(Material.DIAMOND_SWORD), 0.2),
-        Loot(ItemStack(Material.DIRT, 64)),
-        Loot(ItemStack(Material.GLASS_BOTTLE, 64), 0.8),
-        Loot(ItemStack(Material.DIAMOND_BLOCK, 2), 0.1),
-        Loot(ItemStack(Material.STONE_SHOVEL, 1)),
-        Loot(ItemStack(Material.NETHERITE_BLOCK, 1), 0.05),
-        Loot(ItemStack(Material.PACKED_ICE, 64))
-    )
+    private var loots: MutableList<Loot> = mutableListOf(),
+    var cooldown: Cooldown = Cooldown.DAILY
 ) : MutableCollection<Loot> {
     override val size: Int get() = loots.size
     private final val MAX_LOOT_SIZE = 51
@@ -139,5 +125,15 @@ class LootTable (
 
     fun getAllItems(): Collection<ItemStack> {
         return loots.map { (item) -> item.clone() }
+    }
+
+    /**
+     * Returns the luck of the player on a 1 to 5 exponential range
+     */
+    fun getLuck(loot: Loot): Int {
+        val probability = getProbabilityOfLoot(loot)
+        // Exponential function from 5-1
+        val luck = (5 * Math.E.pow(-0.016 * (probability * 100))).toInt()
+        return luck
     }
 }

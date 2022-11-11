@@ -1,8 +1,9 @@
 package com.servegame.yeyyyyyy.luckywheel.commands
 
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
+import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
+import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import com.servegame.yeyyyyyy.luckywheel.menusystem.Menu
-import org.bukkit.ChatColor
 import org.bukkit.command.Command
 import org.bukkit.command.CommandExecutor
 import org.bukkit.command.CommandSender
@@ -11,27 +12,31 @@ import org.bukkit.entity.Player
 class LuckyWheelCommand : CommandExecutor {
     private val logger = LuckyWheel.plugin.logger
     private val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
+    private val lootTableFileManager = LuckyWheel.plugin.lootTablesFileManager
 
     override fun onCommand(sender: CommandSender, command: Command, label: String, args: Array<out String>): Boolean {
         if (sender !is Player) {
-            logger.info(ChatColor.translateAlternateColorCodes('&', messagesConfig.getString("player_only_command")!!))
+            logger.info(messagesConfig.getColoredString("player_only_command"))
             return true
         }
         val player: Player = sender
         if (!player.hasPermission("luckywheel.command")) {
-            send(player, "luckywheel_command_no_permission")
+            player.sendMessage(messagesConfig.getColoredString("luckywheel_command_no_permission"))
             return true
         }
         if (args.isNotEmpty()) {
-            send(player, "invalid_parameter")
-            return false
+            if (args[0] != "create") {
+                player.sendMessage(messagesConfig.getColoredString("invalid_parameter"))
+                return false
+            }
+            val lootTableName = args[1]
+            lootTableFileManager.addLootTable(LootTable(lootTableName))
+            player.sendMessage(
+                messagesConfig.getColoredString("loot_table_created").replace("{lootTable}", lootTableName)
+            )
+            return true
         }
         Menu.openMainMenuGui(player)
         return true
-    }
-
-    private fun send(player: Player, text: String) {
-        val message = messagesConfig.getString(text)!!
-        player.sendMessage(ChatColor.translateAlternateColorCodes('&', message))
     }
 }

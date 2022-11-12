@@ -1,0 +1,6 @@
+# Set the locale for all messages
+# If you don't set this, the default locale of the server will be used.
+# For example, to set language to English, set locale to en, to use the file "messages_en.yml".
+# Don't forget to remove the # in front of the line.
+# available for now: [en, es]
+locale: en

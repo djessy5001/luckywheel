@@ -11,11 +11,10 @@ commands:
     usage: /<command>
     permission: luckywheel.command
     aliases: [ lw ]
-  luckywheel.create:
-    description: Create a new LootTable with name <name>
-    usage: /luckywheel create <name> or /lwc <name>
-    permission: luckywheel.loottables.edit
-    aliases: [ lwc ]
+    create:
+      description: Create a new LootTable with name <name>
+      usage: /luckywheel create <name> or /lwc <name>
+      permission: luckywheel.loottables.edit
   test:
     description: Multipurpose test command
     usage: /<command>

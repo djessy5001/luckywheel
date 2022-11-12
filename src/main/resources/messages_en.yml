@@ -1,7 +1,7 @@
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                   ----[LuckyWheel]----                                            #
-#                                    ----[By djessy50011]----                                       #
+#                                    ----[By djessy5001]----                                       #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
 #                                ----[Plugin Messages Config]----                                   #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
@@ -21,6 +21,7 @@ main_menu_title: "&3Main menu"
 loot_table_list_menu_title: "&3LootTable list"
 loot_table_menu_title: "&3LootTable menu"
 wheel_menu_title: "&3Spin the wheel!"
+wheel_loot_table_list_menu_title: "&3Choose a LootTable"
 edit_item_weight_menu_title: "&3Edit weight menu"
 go_back_menu: "&cGo back"
 exit_menu: "&cExit menu"
@@ -28,8 +29,10 @@ spin_the_wheel: "&5&l&oSpin the wheel!"
 show_loot_table: "&3&lShow LootTable list"
 left_click_to_edit_weight: "&2Press &2&lLeft Click&r&2 to edit the weight"
 right_click_to_remove: "&4Press &4&lRight Click&r&4 to remove!"
-left_click_to_add: "&2Press &2&lLeft Click&r&2 on an item in your inventory to add it to the Loot Table!"
+left_click_to_add: "&2Press &2&lLeft Click&r&2 on an item in your inventory to add it!"
 introduce_weight: '&2Please introduce the weight used to compute the probability of looting this item'
+you_can_spin: "&2&lYou can spin!"
+waiting_time_for_loot_table: "&6Waiting time: {remainingTime}"
 # Weight
 weight_sub_1: "&cSubtract &l1"
 weight_sub_01: "&cSubtract &l0.1"
@@ -45,6 +48,11 @@ right_click_to_undo: "&cPress &lRight Click&r&c to undo"
 new_weight: "&2 - New weight established to &l{weight}"
 old_weight_reestablished: "&2 - Loot's weight was reestablished to &l{weight}!"
 
+# Time
+until_tomorrow: "Until tomorrow"
+until_next_week: "Until next week"
+until_next_hour: "Until new hour"
+
 # Broadcast messages
 win_sentence: "{name} has won &5{amount}x{item}&r which had {probability} of probability"
 
@@ -59,3 +67,4 @@ item_could_not_be_added_to_loot_table: "&c{item} could not be added to LootTable
 item_already_in_loot_table: "&c{item} is already in lootTable '{lootTable}'!"
 loot_table_created: "&2The LootTable '{lootTable}' has been created successfully!"
 loot_table_was_removed: "&6The LootTable '{lootTable}' was removed successfully!"
+cooldown_bypassed: "&6Cooldown bypassed! (using permission: luckywheel.loottables.bypass_cooldown)"

@@ -22,6 +22,7 @@ import kotlin.math.round
 class MenuListener : Listener {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
     val lootTablesFileManager = LuckyWheel.plugin.lootTablesFileManager
+    val playersFileManager = LuckyWheel.plugin.playersFileManager
 
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
@@ -29,6 +30,7 @@ class MenuListener : Listener {
         
         when (event.view.title) {
             MenuTitle.MainMenu.title -> onMainMenuClick(event)
+            MenuTitle.WheelLootTableListMenu.title -> onWheelLootTableListMenuClick(event)
             MenuTitle.LootTableListMenu.title -> onLootTableListMenuClick(event)
             MenuTitle.LootTableMenu.title -> onLootTableMenuClick(event)
             MenuTitle.WheelMenu.title -> onWheelMenuClick(event)
@@ -41,13 +43,45 @@ class MenuListener : Listener {
 
         when (event.currentItem?.itemMeta?.displayName) {
             MenuOptions.SpinTheWheel.option -> {
-                Menu.openWheelGui(event.whoClicked as Player, lootTablesFileManager.getLootTable("default"))
+                Menu.openWheelLootTableListGui(event.whoClicked as Player)
             }
             MenuOptions.ShowLootTable.option -> {
                 Menu.openLootTableListGui(event.whoClicked as Player)
             }
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
+            }
+        }
+    }
+
+    private fun onWheelLootTableListMenuClick(event: InventoryClickEvent) {
+        if (event.clickedInventory?.type == InventoryType.PLAYER) return
+        if (event.currentItem == null) return
+        when (event.currentItem!!.itemMeta?.displayName) {
+            MenuOptions.GoBack.option -> {
+                Menu.openMainMenuGui(event.whoClicked as Player)
+            }
+            MenuOptions.ExitMenu.option -> {
+                event.whoClicked.closeInventory()
+            }
+            else -> {
+                if (event.isLeftClick) {
+                    val player = event.whoClicked as Player
+                    val lootTables = lootTablesFileManager.getAllLootTables()
+                    val clickedLootTable = getClickedLootTable(event, lootTables)
+                    val lastSpinDate = playersFileManager.getLastSpin(player.uniqueId, clickedLootTable.name)
+                    if (!clickedLootTable.canSpin(lastSpinDate).first) {
+                        if (!player.hasPermission("luckywheel.loottables.bypass_cooldown")) {
+                            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+                            return
+                        } else {
+                            player.sendMessage(messagesConfig.getColoredString("cooldown_bypassed"))
+                            player.playSound(player.location, Sound.BLOCK_BEACON_POWER_SELECT, 2f, 1f)
+                        }
+                    }
+
+                    Menu.openWheelGui(player, clickedLootTable)
+                }
             }
         }
     }
@@ -176,6 +210,12 @@ class MenuListener : Listener {
     private fun onWheelMenuClick(event: InventoryClickEvent) {
         if (event.clickedInventory?.type == InventoryType.PLAYER) return
         when (event.currentItem?.itemMeta?.displayName) {
+            MenuOptions.GoBack.option -> {
+                Menu.openWheelLootTableListGui(event.whoClicked as Player)
+            }
+            MenuOptions.ExitMenu.option -> {
+                event.whoClicked.closeInventory()
+            }
             MenuOptions.SpinTheWheel.option -> {
                 event.inventory.remove(event.currentItem!!)
                 event.inventory.setItem(9 + 4, ItemStack(Material.SPECTRAL_ARROW))
@@ -185,12 +225,6 @@ class MenuListener : Listener {
                 wheel.spin()
                 player.spawnParticles(ParticleEffect(Particle.VILLAGER_HAPPY, player.location))
                 player.playSound(player, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)
-            }
-            MenuOptions.GoBack.option -> {
-                Menu.openMainMenuGui(event.whoClicked as Player)
-            }
-            MenuOptions.ExitMenu.option -> {
-                event.whoClicked.closeInventory()
             }
         }
     }

@@ -3,7 +3,10 @@ package com.servegame.yeyyyyyy.luckywheel.core.models
 import com.servegame.yeyyyyyy.luckywheel.exceptions.LootTableNotFoundException
 import com.servegame.yeyyyyyy.luckywheel.extensions.matches
 import com.servegame.yeyyyyyy.luckywheel.extensions.toText
+import com.servegame.yeyyyyyy.luckywheel.utils.minToHoursAndMin
 import org.bukkit.inventory.ItemStack
+import java.time.LocalDateTime
+import java.time.temporal.ChronoUnit
 import kotlin.math.pow
 import kotlin.random.Random
 
@@ -13,13 +16,13 @@ class LootTable(
     var cooldown: Cooldown = Cooldown.DAILY
 ) : MutableCollection<Loot> {
     override val size: Int get() = loots.size
-    private final val MAX_LOOT_SIZE = 51
+    private val maxLootSize = 51
     private val totalWeight
         get() = loots.fold(0.0) { acc, loot -> acc + loot.weight }
 
 
     init {
-        loots = loots.subList(0, minOf(MAX_LOOT_SIZE - 1, loots.size))
+        loots = loots.subList(0, minOf(maxLootSize - 1, loots.size))
     }
 
     fun getRandomLoot(): Pair<Loot, String> {
@@ -64,6 +67,53 @@ class LootTable(
             ?: throw LootTableNotFoundException("No matching loot found in LootTable '$name' for item '${item.toText()}'")
     }
 
+    fun getProbabilityOfLootFormatted(loot: Loot): String {
+        return "%.2f".format(getProbabilityOfLoot(loot).times(100)) + "%"
+    }
+
+    fun getLuck(loot: Loot): Int {
+        val probability = getProbabilityOfLoot(loot)
+        // Exponential function from 5-1
+        val luck = (5 * Math.E.pow(-0.016 * (probability * 100))).toInt()
+        return luck
+    }
+
+    fun canSpin(lastSpinDate: LocalDateTime?): Pair<Boolean, Pair<String, Boolean>?> {
+        if (lastSpinDate == null) return Pair(true, null)
+        val now = LocalDateTime.now()
+        val dateDiffInMinutes = ChronoUnit.MINUTES.between(lastSpinDate, LocalDateTime.now())
+        val canSpin: Boolean
+        val needsTranslation: Boolean
+        val text: String
+        when (cooldown) {
+            Cooldown.DAILY -> {
+                val isAnotherDay = now.toLocalDate() > lastSpinDate.toLocalDate()
+                canSpin = isAnotherDay
+                text = "until_tomorrow"
+                needsTranslation = true
+            }
+            Cooldown.WEEKLY -> {
+                val isAnotherWeek = now.toLocalDate()
+                    .compareTo(lastSpinDate.toLocalDate()) > 7 || now.dayOfWeek < lastSpinDate.dayOfWeek
+                canSpin = isAnotherWeek
+                text = "until_next_week"
+                needsTranslation = true
+            }
+            Cooldown.HOURLY -> {
+                val isAnotherHour = now.toLocalDate() > lastSpinDate.toLocalDate() || now.hour > lastSpinDate.hour
+                canSpin = isAnotherHour
+                text = "until_next_hour"
+                needsTranslation = true
+            }
+            else -> {
+                canSpin = dateDiffInMinutes > cooldown.minutes!!
+                text = minToHoursAndMin(cooldown.minutes!! - dateDiffInMinutes)
+                needsTranslation = false
+            }
+        }
+        return Pair(canSpin, Pair(text, needsTranslation))
+    }
+
     override fun contains(element: Loot): Boolean {
         return loots.contains(element)
     }
@@ -78,14 +128,14 @@ class LootTable(
      * @return `true` if the item was added, or `false` if `maxLootTableSize` has been reached
      */
     override fun add(element: Loot): Boolean {
-        if (loots.size >= MAX_LOOT_SIZE) return false
+        if (loots.size >= maxLootSize) return false
         loots.add(element)
         return true
     }
 
     override fun addAll(elements: Collection<Loot>): Boolean {
         for(loot in elements) {
-            if (loots.size >= MAX_LOOT_SIZE) return false
+            if (loots.size >= maxLootSize) return false
             loots.add(loot)
         }
         return true
@@ -119,10 +169,6 @@ class LootTable(
         return loots.remove(loots.find { loot -> loot.item.matches(item) })
     }
 
-    fun getProbabilityOfLootFormatted(loot: Loot): String {
-        return "%.2f".format(getProbabilityOfLoot(loot).times(100)) + "%"
-    }
-
     fun getAllItems(): Collection<ItemStack> {
         return loots.map { (item) -> item.clone() }
     }
@@ -130,10 +176,5 @@ class LootTable(
     /**
      * Returns the luck of the player on a 1 to 5 exponential range
      */
-    fun getLuck(loot: Loot): Int {
-        val probability = getProbabilityOfLoot(loot)
-        // Exponential function from 5-1
-        val luck = (5 * Math.E.pow(-0.016 * (probability * 100))).toInt()
-        return luck
-    }
+
 }

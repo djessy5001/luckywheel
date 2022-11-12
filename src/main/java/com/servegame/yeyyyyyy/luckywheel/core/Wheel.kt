@@ -19,6 +19,7 @@ import org.bukkit.scheduler.BukkitTask
 
 class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Player) {
     val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
+    val playersFileManager = LuckyWheel.plugin.playersFileManager
     val itemRow = mutableListOf<ItemStack>()
     private var scheduler: BukkitScheduler = Bukkit.getScheduler()
     private var task: BukkitTask? = null
@@ -26,10 +27,12 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
     var prize: Pair<Loot, String>? = null
 
     init {
-        fillItemRow()
+        itemRow.addAll(lootTable.getAllItems())
+        fillEmptySlotsRow()
     }
 
     fun spin() {
+        playersFileManager.logSpin(player.uniqueId, lootTable.name)
         prize = lootTable.getRandomLoot()
         task?.cancel()
         task = scheduler.runTaskTimerAsynchronously(LuckyWheel.plugin, Runnable {
@@ -61,7 +64,7 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
 
     private fun hideOtherItems() {
         itemRow.clear()
-        fillItemRow()
+        fillEmptySlotsRow()
         itemRow[4] = prize!!.first.item
     }
 
@@ -113,8 +116,7 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
         .replace("{item}", prize!!.first.item.type.name)
         .replace("{probability}", prize!!.second)
 
-    private fun fillItemRow() {
-        itemRow.addAll(lootTable.getAllItems())
+    private fun fillEmptySlotsRow() {
         while (itemRow.size < 9) {
             val fillerItem = ItemStack(Material.GRAY_STAINED_GLASS_PANE)
             val meta = fillerItem.itemMeta!!

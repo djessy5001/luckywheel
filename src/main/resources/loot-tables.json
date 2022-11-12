@@ -1,3 +1,66 @@
 {
-  "lootTables": {}
+  "lootTables": {
+    "default": {
+      "name": "default",
+      "cooldown": "DAILY",
+      "lootsSerializable": [
+        {
+          "type": "ENCHANTED_BOOK",
+          "amount": 5,
+          "weight": 0.5,
+          "bookEnchantments": {
+            "minecraft:depth_strider": 3
+          }
+        },
+        {
+          "type": "DIAMOND_SWORD",
+          "amount": 1,
+          "weight": 0.39,
+          "enchantments": {
+            "minecraft:sharpness": 5
+          }
+        },
+        {
+          "type": "DIAMOND_SWORD",
+          "amount": 1,
+          "weight": 0.05,
+          "enchantments": {
+            "minecraft:looting": 3,
+            "minecraft:sharpness": 5,
+            "minecraft:unbreaking": 1
+          }
+        },
+        {
+          "type": "SPLASH_POTION",
+          "amount": 1,
+          "weight": 2.206,
+          "potionData": {
+            "type": "REGEN",
+            "extended": false,
+            "upgraded": false
+          }
+        },
+        {
+          "type": "ALLAY_SPAWN_EGG",
+          "amount": 64,
+          "weight": 1.04
+        },
+        {
+          "type": "REDSTONE_ORE",
+          "amount": 1,
+          "weight": 2.03
+        },
+        {
+          "type": "EXPERIENCE_BOTTLE",
+          "amount": 64,
+          "weight": 0.7
+        },
+        {
+          "type": "AXOLOTL_BUCKET",
+          "amount": 1,
+          "weight": 0.4
+        }
+      ]
+    }
+  }
 }

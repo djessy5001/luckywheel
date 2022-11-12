@@ -30,7 +30,7 @@ open class FileManager(val plugin: LuckyWheel, var fileName: String = "config.ym
             e.printStackTrace()
         }
     }
-
+    
     override fun getConfig(): YamlConfiguration {
         if (dataConfig == null) {
             this.reloadConfig()

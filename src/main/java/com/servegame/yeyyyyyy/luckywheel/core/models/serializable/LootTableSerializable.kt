@@ -4,14 +4,14 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.Cooldown
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 
 
-class LootTableSerializable(var name: String, var lootsSerializable: List<LootSerializable>, var cooldown: String) {
+class LootTableSerializable(var name: String, var cooldown: String, var lootsSerializable: List<LootSerializable>) {
     companion object {
         /**
          * Returns a [LootSerializable] from the given [LootTable]
          */
         fun fromLootTable(lootTable: LootTable): LootTableSerializable {
             val lootsSerializable = lootTable.map { loot -> LootSerializable.fromLoot(loot) }
-            return LootTableSerializable(lootTable.name, lootsSerializable, lootTable.cooldown.name)
+            return LootTableSerializable(lootTable.name, lootTable.cooldown.name, lootsSerializable)
         }
     }
 

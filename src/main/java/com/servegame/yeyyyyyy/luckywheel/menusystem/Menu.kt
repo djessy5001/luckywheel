@@ -19,6 +19,8 @@ class Menu {
     companion object {
         private val messagesConfig = LuckyWheel.plugin.messagesFileManager.getConfig()
         private val lootTableFileManager = LuckyWheel.plugin.lootTablesFileManager
+        private val playersFileManager = LuckyWheel.plugin.playersFileManager
+
         fun openMainMenuGui(player: Player) {
             val inv = Bukkit.createInventory(null, 9, MenuTitle.MainMenu.title)
 
@@ -28,12 +30,47 @@ class Menu {
             player.openInventory(inv)
         }
 
+        fun openWheelLootTableListGui(player: Player) {
+            val lootTables = lootTableFileManager.getAllLootTables().filter { lootTable -> lootTable.size > 0 }
+            val invSize = getNearestCeilMultipleOfNine(lootTables.size + 2)
+            val inv = Bukkit.createInventory(null, invSize, MenuTitle.WheelLootTableListMenu.title)
+
+            for (i in lootTables.indices) {
+                val lootTable = lootTables[i]
+                val lastSpin = playersFileManager.getLastSpin(player.uniqueId, lootTable.name)
+                val remainingTime =
+                    lootTable.canSpin(lastSpin)
+                val lore = listOf(
+                    remainingTimeText(remainingTime),
+                    lootTable.cooldown.name
+                )
+                createLootTableItem(i, lootTable, inv, lore)
+            }
+            addItem(MenuItem.goBack.copy(pos = invSize - 2), inv)
+            addItem(MenuItem.exitMenu.copy(pos = invSize - 1), inv)
+
+            player.openInventory(inv)
+        }
+
+        private fun remainingTimeText(remainingTime: Pair<Boolean, Pair<String, Boolean>?>) =
+            if (remainingTime.first) messagesConfig.getColoredString("you_can_spin")
+            else messagesConfig.getColoredString("waiting_time_for_loot_table")
+                .replace(
+                    "{remainingTime}",
+                    if (remainingTime.second!!.second) messagesConfig.getColoredString(remainingTime.second!!.first) else remainingTime.second!!.first
+                )
+
         fun openLootTableListGui(player: Player) {
             val lootTables = lootTableFileManager.getAllLootTables()
             val invSize = getNearestCeilMultipleOfNine(lootTables.size + 2)
             val inv = Bukkit.createInventory(null, invSize, MenuTitle.LootTableListMenu.title)
+            val lore = if (player.hasPermission("luckywheel.loottables.edit"))
+                listOf(
+                    "",
+                    messagesConfig.getColoredString("right_click_to_remove")
+                ) else null
             for (i in lootTables.indices) {
-                createLootTableItem(i, lootTables[i], inv)
+                createLootTableItem(i, lootTables[i], inv, lore)
             }
             addItem(MenuItem.goBack.copy(pos = invSize - 2), inv)
             addItem(MenuItem.exitMenu.copy(pos = invSize - 1), inv)
@@ -125,15 +162,12 @@ class Menu {
         private fun createLootTableItem(
             index: Int,
             lootTable: LootTable,
-            inv: Inventory
+            inv: Inventory,
+            lore: List<String>? = null
         ) {
             val item = ItemStack(Material.values()[167 + index])
             setItemDisplayName(item, ChatColor.translateAlternateColorCodes('&', "&6" + lootTable.name))
-            val lore = listOf(
-                "",
-                messagesConfig.getColoredString("right_click_to_remove")
-            )
-            addItemLore(item, lore)
+            if (lore != null) addItemLore(item, lore)
             inv.setItem(index, item)
         }
 
@@ -145,12 +179,17 @@ class Menu {
             var index = 0
             lootTable.forEach { loot ->
                 val meta = loot.item.itemMeta!!
-                meta.lore = mutableListOf(
+                val lore = mutableListOf(
                     messagesConfig.getColoredString("common_probability")
                         .replace("{percentage}", lootTable.getProbabilityOfLootFormatted(loot)),
-                    if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("left_click_to_edit_weight") else "",
-                    if (player.hasPermission("luckywheel.loottables.edit")) messagesConfig.getColoredString("right_click_to_remove") else ""
                 )
+                if (player.hasPermission("luckywheel.loottables.edit")) lore.addAll(
+                    listOf(
+                        messagesConfig.getColoredString("left_click_to_edit_weight"),
+                        messagesConfig.getColoredString("right_click_to_remove")
+                    )
+                )
+                meta.lore = lore
                 val lootCopy = loot.copy(item = loot.item.clone())
                 lootCopy.item.itemMeta = meta
                 inv.setItem(index++, lootCopy.item)

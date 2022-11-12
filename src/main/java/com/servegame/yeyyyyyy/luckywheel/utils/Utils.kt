@@ -33,3 +33,7 @@ fun randomColor(): Color {
 fun randomBool(): Boolean {
     return (0..1).random() == 1
 }
+
+fun minToHoursAndMin(minutes: Long): String {
+    return "${minutes.div(60)}h ${minutes.rem(60)}min"
+}

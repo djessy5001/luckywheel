@@ -3,6 +3,8 @@ LuckyWheel (for spigot 1.19.2)
 By djessy5001
 -------
 
+Have you ever wanted to reward your players for being active with random loots? LuckyWheel is the solution!!
+
 ### Description:
 
 LuckyWheel is a spigot plugin that enables the players of the server to spin a wheel
@@ -43,9 +45,9 @@ with
 `"cooldown": "DAILY"` in the loot-tables.json can be changed to other values to change the
 cooldown time.
 
-- DAILY - Every day (not exactly 24 hours)
+- DAILY - Every day (Monday, Tuesday, ...)
 - FULL_DAY - Every 24 hours
-- HOURLY - Every hour (not exactly 1 hour)
+- HOURLY - Every hour (8, 9, 10, ...)
 - FULL_HOUR - Every 1 hour
 - WEEKLY - Every week (not exactly 1 week)
 - FULL_WEEK - Every 1 week

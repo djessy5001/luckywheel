@@ -41,11 +41,6 @@
           }
         },
         {
-          "type": "ALLAY_SPAWN_EGG",
-          "amount": 64,
-          "weight": 1.04
-        },
-        {
           "type": "REDSTONE_ORE",
           "amount": 1,
           "weight": 2.03
@@ -54,11 +49,6 @@
           "type": "EXPERIENCE_BOTTLE",
           "amount": 64,
           "weight": 0.7
-        },
-        {
-          "type": "AXOLOTL_BUCKET",
-          "amount": 1,
-          "weight": 0.4
         }
       ]
     }

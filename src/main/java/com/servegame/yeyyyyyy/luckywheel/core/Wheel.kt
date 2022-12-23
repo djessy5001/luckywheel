@@ -6,7 +6,9 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import com.servegame.yeyyyyyy.luckywheel.extensions.listItems
 import com.servegame.yeyyyyyy.luckywheel.menusystem.Menu
+import com.servegame.yeyyyyyy.luckywheel.utils.VersionChecker
 import com.servegame.yeyyyyyy.luckywheel.utils.randomFireworkEffect
+import com.servegame.yeyyyyyy.luckywheel.utils.versions.V1_19
 import org.bukkit.Bukkit
 import org.bukkit.Material
 import org.bukkit.Sound
@@ -95,11 +97,13 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
 
     private fun showWinEffects() {
         val luck = lootTable.getLuck(prize!!.first)
-        player.playSound(player, Sound.ENTITY_PLAYER_LEVELUP, 1f, (0.until(20).random() / 10).toFloat())
+        player.playSound(player.location, Sound.ENTITY_PLAYER_LEVELUP, 1f, (0.until(20).random() / 10).toFloat())
         scheduler.runTask(LuckyWheel.plugin, Runnable {
             for (i in 0.until(luck)) {
                 val firework = player.world.spawn(player.location, Firework::class.java)
-                firework.maxLife = 10
+                if (VersionChecker.minVersion(V1_19.VERSION)) {
+                    V1_19.setFireworkMaxLife(firework, 10)
+                }
                 val meta = firework.fireworkMeta
                 meta.addEffect(
                     randomFireworkEffect()

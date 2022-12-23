@@ -51,3 +51,9 @@ cooldown time.
 - FULL_HOUR - Every 1 hour
 - WEEKLY - Every week (not exactly 1 week)
 - FULL_WEEK - Every 1 week
+
+### Changelog:
+
+v1.0.1:
+
+- #2 Added backwards compatibility for spigot versions 1.16.x up to 1.19.x

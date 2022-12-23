@@ -1,7 +1,7 @@
 name: LuckyWheel
 version: '${project.version}'
 main: com.servegame.yeyyyyyy.luckywheel.LuckyWheel
-api-version: 1.19
+api-version: 1.16
 prefix: LuckyWheel
 authors: [ djessy5001 ]
 description: Spin the Lucky Wheel to get a random prize!

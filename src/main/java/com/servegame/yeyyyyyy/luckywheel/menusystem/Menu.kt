@@ -165,7 +165,8 @@ class Menu {
             inv: Inventory,
             lore: List<String>? = null
         ) {
-            val item = ItemStack(Material.values()[167 + index])
+            val whiteWoolIndex = Material.values().indexOf(Material.WHITE_WOOL)
+            val item = ItemStack(Material.values()[whiteWoolIndex + index])
             setItemDisplayName(item, ChatColor.translateAlternateColorCodes('&', "&6" + lootTable.name))
             if (lore != null) addItemLore(item, lore)
             inv.setItem(index, item)

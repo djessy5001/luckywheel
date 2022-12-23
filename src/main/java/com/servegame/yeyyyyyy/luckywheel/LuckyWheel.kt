@@ -7,6 +7,8 @@ import com.servegame.yeyyyyyy.luckywheel.files.LootTablesFileManager
 import com.servegame.yeyyyyyy.luckywheel.files.MessagesFileManager
 import com.servegame.yeyyyyyy.luckywheel.files.PlayersFileManager
 import com.servegame.yeyyyyyy.luckywheel.menusystem.MenuListener
+import com.servegame.yeyyyyyy.luckywheel.utils.VersionChecker
+import com.servegame.yeyyyyyy.luckywheel.utils.versions.V1_16
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.plugin.java.JavaPlugin
@@ -36,9 +38,10 @@ class LuckyWheel : JavaPlugin() {
 
     private fun checkVersionCompatible(): Boolean {
         val consoleSender = Bukkit.getConsoleSender()
-        if (!(Bukkit.getServer().version.contains("1.19"))) {
+        if (!VersionChecker.minVersion(V1_16.VERSION)) {
             consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "-----------------------------------------------")
-            consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "LuckyWheel - This plugin only supports 1.19")
+            consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "LuckyWheel - This plugin only supports 1.16+")
+            consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "Current version is " + VersionChecker.serverVersion)
             consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "LuckyWheel - Is now disabling!")
             consoleSender.sendMessage(prefix + ChatColor.RED.toString() + "-----------------------------------------------")
             Bukkit.getPluginManager().disablePlugin(this)

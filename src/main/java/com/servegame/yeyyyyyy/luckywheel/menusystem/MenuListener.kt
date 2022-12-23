@@ -72,7 +72,7 @@ class MenuListener : Listener {
                     val lastSpinDate = playersFileManager.getLastSpin(player.uniqueId, clickedLootTable.name)
                     if (!clickedLootTable.canSpin(lastSpinDate).first) {
                         if (!player.hasPermission("luckywheel.loottables.bypass_cooldown")) {
-                            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+                            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
                             return
                         } else {
                             player.sendMessage(messagesConfig.getColoredString("cooldown_bypassed"))
@@ -172,11 +172,11 @@ class MenuListener : Listener {
         val itemWasRemoved = lootTable.remove(event.currentItem as ItemStack)
         val player = event.whoClicked as Player
         if (!itemWasRemoved) {
-            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
             return "item_from_loot_table_could_not_be_removed"
         }
         lootTablesFileManager.updateLootTable(lootTable)
-        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 0.8f)
+        player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 0.8f)
         Menu.openLootTableGui(event.whoClicked as Player, lootTable)
         return "removed_item_from_loot_table"
     }
@@ -186,11 +186,11 @@ class MenuListener : Listener {
         if (isAlreadyInLootTable(lootTable, event)) return "item_already_in_loot_table"
         val itemWasAdded = lootTable.add(Loot(event.currentItem as ItemStack, 1.0))
         if (!itemWasAdded) {
-            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
             return "item_could_not_be_added_to_loot_table"
         }
         lootTablesFileManager.updateLootTable(lootTable)
-        player.playSound(player, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 1.8f)
+        player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_COW_BELL, 1f, 1.8f)
         Menu.openLootTableGui(event.whoClicked as Player, lootTable)
         return "added_item_to_loot_table"
     }
@@ -201,7 +201,7 @@ class MenuListener : Listener {
         player: Player = event.whoClicked as Player
     ): Boolean {
         if (lootTable.any { loot -> loot.item.matches(event.currentItem!!) }) {
-            player.playSound(player, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
             return true
         }
         return false
@@ -224,7 +224,7 @@ class MenuListener : Listener {
                 val wheel = wheelMeta[0].value() as Wheel
                 wheel.spin()
                 player.spawnParticles(ParticleEffect(Particle.VILLAGER_HAPPY, player.location))
-                player.playSound(player, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)
+                player.playSound(player.location, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)
             }
         }
     }

@@ -7,9 +7,8 @@ class V1_19 {
         val VERSION = "1.19"
 
         fun setFireworkMaxLife(firework: Firework, maxLife: Int) {
-            val fireworkMaxLifeField = Firework::class.java.getDeclaredField("setMaxLife")
-            fireworkMaxLifeField.isAccessible = true
-            fireworkMaxLifeField.setInt(firework, maxLife)
+            val fireworkMaxLifeMethod = firework::class.java.getDeclaredMethod("setMaxLife", Int::class.java)
+            fireworkMaxLifeMethod.invoke(firework, maxLife)
         }
     }
 

@@ -1,6 +1,7 @@
 package com.servegame.yeyyyyyy.luckywheel.core.models.serializable
 
 import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
+import com.servegame.yeyyyyyy.luckywheel.extensions.mapEnchantments
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
@@ -47,7 +48,7 @@ class LootSerializable(
                 val bookEnchantments = (loot.item.itemMeta as EnchantmentStorageMeta)
                 if (bookEnchantments.hasStoredEnchants()) {
                     lootSerializable.bookEnchantments =
-                        bookEnchantments.storedEnchants.mapKeys { bookEnchantment -> bookEnchantment.key.key.toString() }
+                        bookEnchantments.mapEnchantments()
                 }
             }
         }

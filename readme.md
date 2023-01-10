@@ -3,6 +3,8 @@ LuckyWheel (for spigot 1.16-1.19.2)
 By djessy5001
 -------
 
+https://www.spigotmc.org/resources/luckywheel-1-16-1-19.106505/
+
 Have you ever wanted to reward your players for being active with random loots? LuckyWheel is the solution!!
 
 ### Description:

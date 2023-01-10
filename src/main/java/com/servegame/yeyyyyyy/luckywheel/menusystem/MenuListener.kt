@@ -104,13 +104,15 @@ class MenuListener : Listener {
                 } else if (event.isRightClick) {
                     val lootTables = lootTablesFileManager.getAllLootTables()
                     val clickedLootTable = getClickedLootTable(event, lootTables)
-                    lootTablesFileManager.removeLootTable(clickedLootTable)
                     val player = event.whoClicked as Player
-                    player.sendMessage(
-                        messagesConfig.getColoredString("loot_table_was_removed")
-                            .replace("{lootTable}", clickedLootTable.name)
-                    )
-                    Menu.openLootTableListGui(player)
+                    if (player.hasPermission("luckywheel.loottables.edit")) {
+                        lootTablesFileManager.removeLootTable(clickedLootTable)
+                        player.sendMessage(
+                            messagesConfig.getColoredString("loot_table_was_removed")
+                                .replace("{lootTable}", clickedLootTable.name)
+                        )
+                        Menu.openLootTableListGui(player)
+                    }
                 }
             }
         }

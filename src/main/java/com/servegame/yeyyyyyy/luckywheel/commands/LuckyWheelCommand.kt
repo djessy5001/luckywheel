@@ -25,7 +25,7 @@ class LuckyWheelCommand : CommandExecutor {
             return true
         }
         if (args.isNotEmpty()) {
-            if (args[0] != "create") {
+            if (args[0] != "create" || args.size != 2) {
                 player.sendMessage(messagesConfig.getColoredString("invalid_parameter"))
                 return false
             }

@@ -86,7 +86,14 @@ class Menu {
 
             val lootTableMeta = FixedMetadataValue(LuckyWheel.plugin, lootTable.name)
             player.setMetadata("luckywheel_loot_table", lootTableMeta)
-            addItem(MenuItem(Material.PAPER, messagesConfig.getColoredString("left_click_to_add"), inv.size - 3), inv)
+            if (player.hasPermission("luckywheel.loottables.edit")) {
+                addItem(
+                    MenuItem(
+                        Material.PAPER,
+                        messagesConfig.getColoredString("left_click_to_add"), inv.size - 3
+                    ), inv
+                )
+            }
             addItem(MenuItem.goBack.copy(pos = inv.size - 2), inv)
             addItem(MenuItem.exitMenu.copy(pos = inv.size - 1), inv)
             player.openInventory(inv)

@@ -1,4 +1,4 @@
-LuckyWheel (for spigot 1.19.2)
+LuckyWheel (for spigot 1.16-1.19.2)
 ==========
 By djessy5001
 -------

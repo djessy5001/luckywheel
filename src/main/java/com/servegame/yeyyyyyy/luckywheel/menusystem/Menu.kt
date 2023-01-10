@@ -2,6 +2,7 @@ package com.servegame.yeyyyyyy.luckywheel.menusystem
 
 import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 import com.servegame.yeyyyyyy.luckywheel.core.Wheel
+import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.currentLootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
@@ -178,7 +179,7 @@ class Menu {
             player: Player
         ) {
             var index = 0
-            lootTable.forEach { loot ->
+            lootTable.sortedByDescending(Loot::weight).forEach { loot ->
                 val meta = loot.item.itemMeta!!
                 val lore = mutableListOf(
                     messagesConfig.getColoredString("common_probability")

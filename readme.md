@@ -57,3 +57,10 @@ cooldown time.
 v1.0.1:
 
 - #2 Added backwards compatibility for spigot versions 1.16.x up to 1.19.x
+
+v1.02:
+
+- The LootTable Loots are now sorted by weight
+- #6 Added missing permission checks before removing the LootTable
+- #8 Fixed bug that made it impossible to add different enchanted books to the same LootTable
+- Fixed wrong implementation of reflection for V1_19 class

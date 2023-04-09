@@ -13,7 +13,8 @@ import kotlin.random.Random
 class LootTable(
     var name: String = "default",
     private var loots: MutableList<Loot> = mutableListOf(),
-    var cooldown: Cooldown = Cooldown.DAILY
+    var cooldown: Cooldown = Cooldown.DAILY,
+    var type: LootTableType = LootTableType.TIME
 ) : MutableCollection<Loot> {
     override val size: Int get() = loots.size
     private val maxLootSize = 51

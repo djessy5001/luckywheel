@@ -34,7 +34,7 @@ class LootTablesFileManager(private val plugin: LuckyWheel) {
     }
 
     /**
-     * Returns a [List<LootTable>] containing all the LootTables.
+     * Returns a [List]<[LootTable]> containing all the LootTables.
      */
     fun getAllLootTables(): List<LootTable> {
         return getData().map { it.value }

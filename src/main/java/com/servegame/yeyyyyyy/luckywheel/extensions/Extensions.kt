@@ -37,19 +37,30 @@ fun ItemStack.toText(): String {
 }
 
 /**
+ * Sets the display name of an ItemStack to the given name
+ */
+fun ItemStack.withName(name: String): ItemStack {
+    return this.apply {
+        itemMeta?.apply {
+            setDisplayName(name)
+        }
+    }
+}
+
+/**
  * Returns true if the given item matches this instance's [ItemStack.type], [ItemStack.amount] and [ItemStack.getEnchantments]
  */
 fun ItemStack.matches(item: ItemStack): Boolean {
-    if (item.itemMeta?.isEnchantedBook() == true && this.itemMeta?.isEnchantedBook() == true) {
-        val thisEnchantments = (this.itemMeta as EnchantmentStorageMeta)
+    if (itemMeta?.isEnchantedBook() == true && item.itemMeta?.isEnchantedBook() == true) {
+        val thisEnchantments = (itemMeta as EnchantmentStorageMeta)
         val itemEnchantments = (item.itemMeta as EnchantmentStorageMeta)
         if (thisEnchantments.hasStoredEnchants() && itemEnchantments.hasStoredEnchants()) {
             val thisEnchantsMap = thisEnchantments.mapEnchantments()
             val itemEnchantsMap = itemEnchantments.mapEnchantments()
-            return this.type == item.type && this.amount == item.amount && thisEnchantsMap == itemEnchantsMap
+            return type == item.type && amount == item.amount && thisEnchantsMap == itemEnchantsMap
         }
     }
-    return this.type == item.type && this.amount == item.amount
+    return type == item.type && amount == item.amount
 }
 
 fun ItemMeta.isEnchantedBook(): Boolean {

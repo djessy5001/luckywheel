@@ -4,6 +4,7 @@ import com.servegame.yeyyyyyy.luckywheel.LuckyWheel
 import com.servegame.yeyyyyyy.luckywheel.core.Wheel
 import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
+import com.servegame.yeyyyyyy.luckywheel.core.models.LootTableType
 import com.servegame.yeyyyyyy.luckywheel.extensions.*
 import com.servegame.yeyyyyyy.luckywheel.utils.ParticleEffect
 import org.bukkit.Material
@@ -69,14 +70,16 @@ class MenuListener : Listener {
                     val player = event.whoClicked as Player
                     val lootTables = lootTablesFileManager.getAllLootTables()
                     val clickedLootTable = getClickedLootTable(event, lootTables)
-                    val lastSpinDate = playersFileManager.getLastSpin(player.uniqueId, clickedLootTable.name)
-                    if (!clickedLootTable.canSpin(lastSpinDate).first) {
-                        if (!player.hasPermission("luckywheel.loottables.bypass_cooldown")) {
-                            player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
-                            return
-                        } else {
-                            player.sendMessage(messagesConfig.getColoredString("cooldown_bypassed"))
-                            player.playSound(player.location, Sound.BLOCK_BEACON_POWER_SELECT, 2f, 1f)
+                    if (clickedLootTable.type == LootTableType.TIME) {
+                        val lastSpinDate = playersFileManager.getLastSpin(player.uniqueId, clickedLootTable.name)
+                        if (!clickedLootTable.canSpin(lastSpinDate).first) {
+                            if (!player.hasPermission("luckywheel.loottables.bypass_cooldown")) {
+                                player.playSound(player.location, Sound.BLOCK_NOTE_BLOCK_DIDGERIDOO, 1f, 0.8f)
+                                return
+                            } else {
+                                player.sendMessage(messagesConfig.getColoredString("cooldown_bypassed"))
+                                player.playSound(player.location, Sound.BLOCK_BEACON_POWER_SELECT, 2f, 1f)
+                            }
                         }
                     }
 
@@ -140,10 +143,11 @@ class MenuListener : Listener {
     }
 
     private fun handleOtherLootTableClick(event: InventoryClickEvent) {
-        val player = event.whoClicked as Player
         val inventory = event.inventory
         val helpPaperItem = inventory.getItem(inventory.size - 3)
         if (event.currentItem == null || event.currentItem == helpPaperItem) return
+
+        val player = event.whoClicked as Player
         if (player.hasPermission("luckywheel.loottables.edit")) {
             val lootTableName = player.currentLootTable()
             val lootTable: LootTable = lootTablesFileManager.getLootTable(lootTableName)
@@ -219,11 +223,19 @@ class MenuListener : Listener {
                 event.whoClicked.closeInventory()
             }
             MenuOptions.SpinTheWheel.option -> {
-                event.inventory.remove(event.currentItem!!)
-                event.inventory.setItem(9 + 4, ItemStack(Material.SPECTRAL_ARROW))
                 val player = event.whoClicked as Player
                 val wheelMeta = player.getMetadata("luckywheel_wheel")
                 val wheel = wheelMeta[0].value() as Wheel
+                val lootTable = wheel.lootTable
+                val fee = 1
+                if (lootTable.type == LootTableType.TOKEN) {
+                    // TODO: REMOVE THE ITEM FROM THE INVENTORY
+//                    val token = player.inventory.find { it.type == tokenItem }.let {
+//                        it!!.amount = it.amount - fee
+//                    }
+                }
+                event.inventory.remove(event.currentItem!!)
+                event.inventory.setItem(9 + 4, ItemStack(Material.SPECTRAL_ARROW).withName("-"))
                 wheel.spin()
                 player.spawnParticles(ParticleEffect(Particle.VILLAGER_HAPPY, player.location))
                 player.playSound(player.location, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)

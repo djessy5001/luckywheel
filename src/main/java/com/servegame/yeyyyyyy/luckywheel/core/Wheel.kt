@@ -5,6 +5,7 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
 import com.servegame.yeyyyyyy.luckywheel.extensions.listItems
+import com.servegame.yeyyyyyy.luckywheel.extensions.withName
 import com.servegame.yeyyyyyy.luckywheel.menusystem.Menu
 import com.servegame.yeyyyyyy.luckywheel.utils.VersionChecker
 import com.servegame.yeyyyyyy.luckywheel.utils.randomFireworkEffect
@@ -46,11 +47,14 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
     private fun moveItems() {
         counter++
         if (counter <= 50) {
+            // spin
             itemRow.add(itemRow.removeFirst())
         } else {
+            // spin slowly
             if (counter % 3 == 0) itemRow.add(itemRow.removeFirst())
         }
         if (counter > 60 && itemRow[4] == prize?.first?.item) {
+            // stop spinning
             task?.cancel()
             scheduler.runTaskLater(LuckyWheel.plugin, Runnable {
                 hideOtherItems()
@@ -61,7 +65,7 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
     }
 
     private fun paintWheelRow() {
-        Menu.paintWheelRow(inventory, this)
+        Menu.paintWheelRow(this)
     }
 
     private fun hideOtherItems() {
@@ -122,10 +126,7 @@ class Wheel(val lootTable: LootTable, val inventory: Inventory, val player: Play
 
     private fun fillEmptySlotsRow() {
         while (itemRow.size < 9) {
-            val fillerItem = ItemStack(Material.GRAY_STAINED_GLASS_PANE)
-            val meta = fillerItem.itemMeta!!
-            meta.setDisplayName("-")
-            fillerItem.itemMeta = meta
+            val fillerItem = ItemStack(Material.GRAY_STAINED_GLASS_PANE).withName("-")
             itemRow.add(fillerItem)
         }
     }

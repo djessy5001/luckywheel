@@ -6,10 +6,12 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.currentLootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.getColoredString
+import com.servegame.yeyyyyyy.luckywheel.extensions.withName
 import com.servegame.yeyyyyyy.luckywheel.utils.getNearestCeilMultipleOfNine
 import org.bukkit.Bukkit
 import org.bukkit.ChatColor
 import org.bukkit.Material
+import org.bukkit.Sound
 import org.bukkit.entity.Player
 import org.bukkit.inventory.Inventory
 import org.bukkit.inventory.ItemStack
@@ -103,7 +105,7 @@ class Menu {
             val inv = Bukkit.createInventory(null, 27, MenuTitle.WheelMenu.title)
 
             val wheel = Wheel(lootTable, inv, player)
-            paintWheelRow(inv, wheel)
+            paintWheelRow(wheel)
             val wheelMeta = FixedMetadataValue(LuckyWheel.plugin, wheel)
             player.setMetadata("luckywheel_wheel", wheelMeta)
 
@@ -142,23 +144,20 @@ class Menu {
         }
 
 
-        fun paintWheelRow(inv: Inventory, wheel: Wheel) {
+        fun paintWheelRow(wheel: Wheel) {
+            val inventory = wheel.inventory
             var index = 0
-            wheel.itemRow.subList(0, 9).forEach { item -> inv.setItem(index++, item) }
+            wheel.itemRow.subList(0, 9).forEach { item -> inventory.setItem(index++, item) }
+            val player = wheel.player
+            player.playSound(player.location, Sound.ITEM_FLINTANDSTEEL_USE, 0.8f, 1.6f)
         }
 
 
         private fun addItem(menuItem: MenuItem, inv: Inventory) {
             val (material, text, pos) = menuItem
             val item = ItemStack(material)
-            setItemDisplayName(item, text)
+            item.withName(text)
             inv.setItem(pos, item)
-        }
-
-        private fun setItemDisplayName(item: ItemStack, name: String) {
-            val meta = item.itemMeta!!
-            meta.setDisplayName(name)
-            item.itemMeta = meta
         }
 
         private fun addItemLore(item: ItemStack, lore: List<String>) {
@@ -175,7 +174,7 @@ class Menu {
         ) {
             val whiteWoolIndex = Material.values().indexOf(Material.WHITE_WOOL)
             val item = ItemStack(Material.values()[whiteWoolIndex + index])
-            setItemDisplayName(item, ChatColor.translateAlternateColorCodes('&', "&6" + lootTable.name))
+            item.withName(ChatColor.translateAlternateColorCodes('&', "&6" + lootTable.name))
             if (lore != null) addItemLore(item, lore)
             inv.setItem(index, item)
         }

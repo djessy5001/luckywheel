@@ -1,9 +1,9 @@
-LuckyWheel (for spigot 1.16-1.19.2)
+LuckyWheel (for spigot 1.16-1.20.1)
 ==========
 By djessy5001
 -------
 
-https://www.spigotmc.org/resources/luckywheel-1-16-1-19.106505/
+https://www.spigotmc.org/resources/luckywheel-1-16-1-20.106505/
 
 Have you ever wanted to reward your players for being active with random loots? LuckyWheel is the solution!!
 
@@ -68,3 +68,7 @@ v1.0.2:
 - Fixed wrong implementation of reflection for V1_19 class
 - #4 Fixed NPE when using /luckywheel create with empty name
 - Removed paper with instructions for regular players in LootTable Loot list
+
+v1.0.3:
+
+- Added compatibility with 1.20/1.20.1

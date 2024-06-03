@@ -72,3 +72,7 @@ v1.0.2:
 v1.0.3:
 
 - Added compatibility with 1.20/1.20.1
+
+v1.0.4:
+
+- #11 Removed test command

@@ -15,9 +15,6 @@ commands:
       description: Create a new LootTable with name <name>
       usage: /luckywheel create <name> or /lwc <name>
       permission: luckywheel.loottables.edit
-  test:
-    description: Multipurpose test command
-    usage: /<command>
 
 permissions:
   luckywheel.command:

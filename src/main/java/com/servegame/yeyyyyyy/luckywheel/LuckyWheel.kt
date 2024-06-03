@@ -1,7 +1,6 @@
 package com.servegame.yeyyyyyy.luckywheel
 
 import com.servegame.yeyyyyyy.luckywheel.commands.LuckyWheelCommand
-import com.servegame.yeyyyyyy.luckywheel.commands.TestCommand
 import com.servegame.yeyyyyyy.luckywheel.files.ConfigFileManager
 import com.servegame.yeyyyyyy.luckywheel.files.LootTablesFileManager
 import com.servegame.yeyyyyyy.luckywheel.files.MessagesFileManager
@@ -63,7 +62,6 @@ class LuckyWheel : JavaPlugin() {
 
     private fun enableCommands() {
         server.getPluginCommand("luckywheel")!!.setExecutor(LuckyWheelCommand())
-        server.getPluginCommand("test")!!.setExecutor(TestCommand())
     }
 
     private fun enableListeners() {

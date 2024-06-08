@@ -76,3 +76,7 @@ v1.0.3:
 v1.0.4:
 
 - #11 Removed test command
+
+v1.0.5:
+
+- #12 Fixed potionData error on 1.20.5+ MC versions

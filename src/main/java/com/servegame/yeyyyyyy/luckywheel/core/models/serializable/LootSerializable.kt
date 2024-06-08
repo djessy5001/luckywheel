@@ -2,12 +2,15 @@ package com.servegame.yeyyyyyy.luckywheel.core.models.serializable
 
 import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.extensions.mapEnchantments
+import com.servegame.yeyyyyyy.luckywheel.utils.VersionChecker
+import com.servegame.yeyyyyyy.luckywheel.utils.versions.V1_20_5
 import org.bukkit.Material
 import org.bukkit.enchantments.Enchantment
 import org.bukkit.inventory.ItemStack
 import org.bukkit.inventory.meta.EnchantmentStorageMeta
 import org.bukkit.inventory.meta.PotionMeta
 import org.bukkit.potion.PotionData
+import org.bukkit.potion.PotionType
 
 class LootSerializable(
     var type: String,
@@ -17,6 +20,7 @@ class LootSerializable(
     var enchantments: Map<String, Int>? = null
     var bookEnchantments: Map<String, Int>? = null
     var potionData: PotionData? = null
+    var potionType: PotionType? = null
 
     companion object {
         /**
@@ -85,11 +89,16 @@ class LootSerializable(
     private fun convertLootSerializablePotionMeta(
         itemStack: ItemStack,
     ) {
-        if (itemStack.itemMeta is PotionMeta && potionData != null) {
-            val meta = itemStack.itemMeta as PotionMeta
-            meta.basePotionData = potionData!!
-            itemStack.itemMeta = meta
+        if (VersionChecker.minVersion(V1_20_5.VERSION)) {
+            V1_20_5.convertLootSerializablePotionMeta(itemStack, potionType)
+        } else {
+            if (itemStack.itemMeta is PotionMeta && potionData != null) {
+                val meta = itemStack.itemMeta as PotionMeta
+                meta.basePotionData = potionData!!
+                itemStack.itemMeta = meta
+            }
         }
+
     }
 
     private fun convertLootSerializableBookMeta(itemStack: ItemStack) {

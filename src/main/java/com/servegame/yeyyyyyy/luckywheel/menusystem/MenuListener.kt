@@ -6,6 +6,8 @@ import com.servegame.yeyyyyyy.luckywheel.core.models.Loot
 import com.servegame.yeyyyyyy.luckywheel.core.models.LootTable
 import com.servegame.yeyyyyyy.luckywheel.extensions.*
 import com.servegame.yeyyyyyy.luckywheel.utils.ParticleEffect
+import com.servegame.yeyyyyyy.luckywheel.utils.VersionChecker
+import com.servegame.yeyyyyyy.luckywheel.utils.versions.V1_20_5
 import org.bukkit.Material
 import org.bukkit.Particle
 import org.bukkit.Sound
@@ -27,7 +29,7 @@ class MenuListener : Listener {
     @EventHandler
     fun onInventoryClick(event: InventoryClickEvent) {
         if (event.view.title.startsWith(messagesConfig.getColoredString("menu_title_prefix"))) event.isCancelled = true
-        
+
         when (event.view.title) {
             MenuTitle.MainMenu.title -> onMainMenuClick(event)
             MenuTitle.WheelLootTableListMenu.title -> onWheelLootTableListMenuClick(event)
@@ -45,9 +47,11 @@ class MenuListener : Listener {
             MenuOptions.SpinTheWheel.option -> {
                 Menu.openWheelLootTableListGui(event.whoClicked as Player)
             }
+
             MenuOptions.ShowLootTable.option -> {
                 Menu.openLootTableListGui(event.whoClicked as Player)
             }
+
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
@@ -61,9 +65,11 @@ class MenuListener : Listener {
             MenuOptions.GoBack.option -> {
                 Menu.openMainMenuGui(event.whoClicked as Player)
             }
+
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
+
             else -> {
                 if (event.isLeftClick) {
                     val player = event.whoClicked as Player
@@ -93,9 +99,11 @@ class MenuListener : Listener {
             MenuOptions.GoBack.option -> {
                 Menu.openMainMenuGui(event.whoClicked as Player)
             }
+
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
+
             else -> {
                 if (event.isLeftClick) {
                     val lootTables = lootTablesFileManager.getAllLootTables()
@@ -130,9 +138,11 @@ class MenuListener : Listener {
             MenuOptions.GoBack.option -> {
                 Menu.openLootTableListGui(event.whoClicked as Player)
             }
+
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
+
             else -> {
                 handleOtherLootTableClick(event)
             }
@@ -215,9 +225,11 @@ class MenuListener : Listener {
             MenuOptions.GoBack.option -> {
                 Menu.openWheelLootTableListGui(event.whoClicked as Player)
             }
+
             MenuOptions.ExitMenu.option -> {
                 event.whoClicked.closeInventory()
             }
+
             MenuOptions.SpinTheWheel.option -> {
                 event.inventory.remove(event.currentItem!!)
                 event.inventory.setItem(9 + 4, ItemStack(Material.SPECTRAL_ARROW))
@@ -225,7 +237,12 @@ class MenuListener : Listener {
                 val wheelMeta = player.getMetadata("luckywheel_wheel")
                 val wheel = wheelMeta[0].value() as Wheel
                 wheel.spin()
-                player.spawnParticles(ParticleEffect(Particle.VILLAGER_HAPPY, player.location))
+                player.spawnParticles(
+                    ParticleEffect(
+                        if (VersionChecker.minVersion(V1_20_5.VERSION)) V1_20_5.happyVillagerParticle() else Particle.VILLAGER_HAPPY,
+                        player.location
+                    )
+                ) // Particle.VILLAGER_HAPPY
                 player.playSound(player.location, Sound.ENTITY_ZOMBIE_VILLAGER_CURE, 1f, 1f)
             }
         }

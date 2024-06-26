@@ -9,10 +9,17 @@ class VersionChecker {
         private val logger = LuckyWheel.plugin.logger
         val serverVersion = Bukkit.getServer().version
         val VERSIONS =
-            listOf(V1_16.VERSION, V1_17.VERSION, V1_18.VERSION, V1_19.VERSION, V1_20.VERSION, V1_20_5.VERSION)
+            listOf(
+                V1_16.VERSION,
+                V1_17.VERSION,
+                V1_18.VERSION,
+                V1_19.VERSION,
+                V1_20.VERSION,
+                V1_20_5.VERSION,
+                V1_21.VERSION
+            )
 
         fun checkVersion(version: String): Boolean {
-
             return Bukkit.getServer().version.contains(version)
         }
 

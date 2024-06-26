@@ -1,9 +1,9 @@
-LuckyWheel (for spigot 1.16-1.20.6)
+LuckyWheel (for spigot 1.16-1.21)
 ==========
 By djessy5001
 -------
 
-https://www.spigotmc.org/resources/luckywheel-1-16-1-20.106505/
+https://www.spigotmc.org/resources/luckywheel-1-16-1-21.106505/
 
 Have you ever wanted to reward your players for being active with random loots? LuckyWheel is the solution!!
 
@@ -80,3 +80,7 @@ v1.0.4:
 v1.0.5:
 
 - #12 Fixed potionData error on 1.20.5+ MC versions
+
+v1.0.6:
+
+- Added compatibility with 1.21

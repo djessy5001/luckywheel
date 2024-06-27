@@ -1,0 +1,70 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[LuckyWheel]----                                            #
+#                                    ----[By djessy5001]----                                        #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                         ----[插件消息文本]----                                     #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# 普通消息
+common_probability: "&6概率: &f{percentage}"
+
+# LuckyWheel 命令消息
+player_only_command: "该命令只能由玩家执行."
+invalid_parameter: "&c参数无效. 请使用如下命令:"
+luckywheel_command_no_permission: "&c你没有权限使用此命令."
+
+# 菜单消息
+menu_title_prefix: "&2&l&n幸运转盘&r - "
+main_menu_title: "&3主菜单"
+loot_table_list_menu_title: "&3道具池列表"
+loot_table_menu_title: "&3道具池菜单"
+wheel_menu_title: "&3开始抽奖!"
+wheel_loot_table_list_menu_title: "&3选择道具池"
+edit_item_weight_menu_title: "&3编辑权重界面"
+go_back_menu: "&c返回"
+exit_menu: "&c推出"
+spin_the_wheel: "&5&l&o开始抽奖!"
+show_loot_table: "&3&l显示道具池列表"
+left_click_to_edit_weight: "&2&l鼠标左键&r&2 编辑权重"
+right_click_to_remove: "&4&l鼠标右键&r&4 移除!"
+left_click_to_add: "&2&鼠标左键&r&2点击物品栏内物品可添加至此!"
+introduce_weight: '&2请输入权重，以此表示抽中物品的几率'
+you_can_spin: "&2&l开转!"
+waiting_time_for_loot_table: "&6等待时间: {remainingTime}"
+# 权重
+weight_sub_1: "&c减少 &l1"
+weight_sub_01: "&c减少 &l0.1"
+weight_sub_001: "&c减少 &l0.01"
+weight_sub_0001: "&c减少 &l0.001"
+weight_add_0001: "&2增加 &l0.001"
+weight_add_001: "&2增加 &l0.01"
+weight_add_01: "&2增加 &l0.1"
+weight_add_1: "&2增加 &l1"
+current_weight: "&5当前权重为 &l{weight}"
+left_click_to_accept: "&2&鼠标左键&r&2 接受"
+right_click_to_undo: "&c&l鼠标右键&r&c 取消"
+new_weight: "&2 - 新权重设置为 &l{weight}"
+old_weight_reestablished: "&2 - 奖品权重已重设为 &l{weight}!"
+
+# 冷却时间
+until_tomorrow: "直至明天"
+until_next_week: "直至下周"
+until_next_hour: "直至下个小时"
+
+# 公告消息
+win_sentence: "{name} 抽中了概率为 {probability} 的物品 &5{amount}x{item}&r！"
+
+
+# 玩家消息
+items_sent_to_enderchest: "&6背包空间不足, 奖品 {items} 已发送至你的背包"
+dropped_items: "&c背包/末影箱空间不足,奖品 {items} 已掉落在地上!"
+removed_item_from_loot_table: "物品 &6{item} 已被成功移出道具池 '{lootTable}'"
+item_from_loot_table_could_not_be_removed: "&c来自 '{lootTable}' 道具池的物品 {item} 不能被删除!"
+added_item_to_loot_table: "物品 &2{item} 已被成功加入道具池 '{lootTable}'"
+item_could_not_be_added_to_loot_table: "&c物品 {item} 不能加入道具池 '{lootTable}' (道具池大小为 51)!"
+item_already_in_loot_table: "物品 &c{item} 已经处于道具池 '{lootTable}' 中!"
+loot_table_created: "&2道具池 '{lootTable}' 创建成功!"
+loot_table_was_removed: "&6道具池 '{lootTable}' 移除成功!"
+cooldown_bypassed: "&6已无视冷却! (权限: luckywheel.loottables.bypass_cooldown)"

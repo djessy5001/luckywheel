@@ -1,0 +1,70 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[LuckyWheel]----                                            #
+#                                    ----[By djessy5001]----                                       #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                ----[Plugin Messages Config]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# Messages courants
+common_probability: "&6Probabilité : &f{percentage}"
+
+# Messages de commande LuckyWheel
+player_only_command: "Cette commande ne peut être exécutée que par un joueur."
+invalid_parameter: "&cParamètres invalides. Utilisez la commande comme suit :"
+luckywheel_command_no_permission: "&cVous n'avez pas les permissions requises pour utiliser cette commande."
+
+# Messages de menu
+menu_title_prefix: "&2&l&nRoue de la chance&r - "
+main_menu_title: "&3Menu principal"
+loot_table_list_menu_title: "&3Liste des LootTables"
+loot_table_menu_title: "&3Menu des LootTables"
+wheel_menu_title: "&3Lancez la roue !"
+wheel_loot_table_list_menu_title: "&3Choisissez une LootTable"
+edit_item_weight_menu_title: "&3Menu d'édition du poids"
+go_back_menu: "&cRetour"
+exit_menu: "&cQuitter le menu"
+spin_the_wheel: "&5&l&oLancez la roue !"
+show_loot_table: "&3&lAfficher la liste des LootTables"
+left_click_to_edit_weight: "&2Appuyez sur &2&lClic Gauche&r&2 pour modifier le poids"
+right_click_to_remove: "&4Appuyez sur &4&lClic Droit&r&4 pour supprimer !"
+left_click_to_add: "&2Appuyez sur &2&lClic Gauche&r&2 sur un objet dans votre inventaire pour l'ajouter !"
+introduce_weight: '&2Veuillez introduire le poids utilisé pour calculer la probabilité de récupérer cet objet'
+you_can_spin: "&2&lVous pouvez tourner !"
+waiting_time_for_loot_table: "&6Temps d'attente : {remainingTime}"
+
+# Poids
+weight_sub_1: "&cSoustraire &l1"
+weight_sub_01: "&cSoustraire &l0.1"
+weight_sub_001: "&cSoustraire &l0.01"
+weight_sub_0001: "&cSoustraire &l0.001"
+weight_add_0001: "&2Ajouter &l0.001"
+weight_add_001: "&2Ajouter &l0.01"
+weight_add_01: "&2Ajouter &l0.1"
+weight_add_1: "&2Ajouter &l1"
+current_weight: "&5Le poids actuel est &l{weight}"
+left_click_to_accept: "&2Appuyez sur &lClic Gauche&r&2 pour accepter"
+right_click_to_undo: "&cAppuyez sur &lClic Droit&r&c pour annuler"
+new_weight: "&2 - Nouveau poids établi à &l{weight}"
+old_weight_reestablished: "&2 - Le poids du butin a été rétabli à &l{weight} !"
+
+# Temps
+until_tomorrow: "Jusqu'à demain"
+until_next_week: "Jusqu'à la semaine prochaine"
+until_next_hour: "Jusqu'à la prochaine heure"
+
+# Messages de diffusion
+win_sentence: "{name} a gagné &5{amount}x{item}&r avec une probabilité de {probability}"
+
+# Messages au joueur
+items_sent_to_enderchest: "&6Il n'y a pas assez de place dans votre inventaire, {items} a été envoyé dans l'enderchest"
+dropped_items: "&cIl n'y a pas assez de place dans votre inventaire/enderchest, {items} est au sol !"
+removed_item_from_loot_table: "&6{item} a été supprimé du LootTable '{lootTable}' avec succès"
+item_from_loot_table_could_not_be_removed: "&c{item} du LootTable '{lootTable}' n'a pas pu être supprimé !"
+added_item_to_loot_table: "&2{item} a été ajouté au LootTable '{lootTable}' avec succès"
+item_could_not_be_added_to_loot_table: "&c{item} n'a pas pu être ajouté au LootTable '{lootTable}' (la taille maximale d'une loot table est de 51) !"
+item_already_in_loot_table: "&c{item} est déjà dans le LootTable '{lootTable}' !"
+loot_table_created: "&2Le LootTable '{lootTable}' a été créé avec succès !"
+loot_table_was_removed: "&6Le LootTable '{lootTable}' a été supprimé avec succès !"
+cooldown_bypassed: "&6Délai de récupération contourné ! (utilisant la permission : luckywheel.loottables.bypass_cooldown)"

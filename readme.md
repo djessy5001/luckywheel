@@ -19,8 +19,8 @@ The LootTables of the LuckyWheel are customizable! You can:
 - Change the cooldown for spinning the wheel
 - Create new LootTables and erase them
 
-You can also change the language of the plugin to spanish, by going to the config.yml
-and changing
+You can also change the language of the plugin to spanish (es), simplified chinese (zhcn) or french (fr), by going to
+the config.yml and changing
 
 `locale: en`
 
@@ -84,3 +84,8 @@ v1.0.5:
 v1.0.6:
 
 - Added compatibility with 1.21
+
+v1.0.7:
+
+- Added official translations to simplified chinese (thanks to SnowCutieOwO) and french
+- Resolved minor translation issues and enhanced the Spanish translations with correct accents

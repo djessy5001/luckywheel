@@ -1,0 +1,70 @@
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                   ----[LuckyWheel]----                                            #
+#                                    ----[By djessy5001]----                                        #
+#                           ----[Russian translation by thejenja]----                               #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#                                ----[Plugin Messages Config]----                                   #
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+#~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~#
+
+# Общие сообщения
+common_probability: "&6Вероятность: &f{percentage}"
+
+# Сообщения команды LuckyWheel
+player_only_command: "Эту команду может выполнять только игрок."
+invalid_parameter: "&cУказаны неверные параметры. Используйте команду следующим образом:"
+luckywheel_command_no_permission: "&cУ вас нет прав на использование этой команды."
+
+# Сообщения меню
+menu_title_prefix: "&2&l&nКолесо Удачи&r - "
+main_menu_title: "&3Главное меню"
+loot_table_list_menu_title: "&3Список таблиц добычи"
+loot_table_menu_title: "&3Меню таблицы добычи"
+wheel_menu_title: "&3Крутите колесо!"
+wheel_loot_table_list_menu_title: "&3Выберите таблицу добычи"
+edit_item_weight_menu_title: "&3Меню редактирования веса"
+go_back_menu: "&cВернуться назад"
+exit_menu: "&cВыйти из меню"
+spin_the_wheel: "&5&l&oКрутите колесо!"
+show_loot_table: "&3&lПоказать список таблиц добычи"
+left_click_to_edit_weight: "&2Нажмите &2&lЛКМ&r&2 для редактирования веса"
+right_click_to_remove: "&4Нажмите &4&lПКМ&r&4 для удаления!"
+left_click_to_add: "&2Нажмите &2&lЛКМ&r&2 на предмет в вашем инвентаре, чтобы добавить его!"
+introduce_weight: "&2Пожалуйста, введите вес, используемый для вычисления вероятности получения этого предмета"
+you_can_spin: "&2&lВы можете крутить!"
+waiting_time_for_loot_table: "&6Ожидание: {remainingTime}"
+# Вес
+weight_sub_1: "&cУменьшить на &l1"
+weight_sub_01: "&cУменьшить на &l0.1"
+weight_sub_001: "&cУменьшить на &l0.01"
+weight_sub_0001: "&cУменьшить на &l0.001"
+weight_add_0001: "&2Увеличить на &l0.001"
+weight_add_001: "&2Увеличить на &l0.01"
+weight_add_01: "&2Увеличить на &l0.1"
+weight_add_1: "&2Увеличить на &l1"
+current_weight: "&5Текущий вес: &l{weight}"
+left_click_to_accept: "&2Нажмите &lЛКМ&r&2 для принятия"
+right_click_to_undo: "&cНажмите &lПКМ&r&c для отмены"
+new_weight: "&2 - Новый вес установлен на &l{weight}"
+old_weight_reestablished: "&2 - Вес добычи восстановлен до &l{weight}!"
+
+# Время
+until_tomorrow: "До завтра"
+until_next_week: "До следующей недели"
+until_next_hour: "До нового часа"
+
+# Сообщения широковещательной рассылки
+win_sentence: "{name} выиграл &5{amount}x{item}&r с вероятностью {probability}"
+
+# Сообщения игрока
+items_sent_to_enderchest: "&6Недостаточно места в вашем инвентаре, {items} отправлен(ы) в эндерсундук"
+dropped_items: "&cНедостаточно места в вашем инвентаре/эндерсундуке, {items} на земле!"
+removed_item_from_loot_table: "&6{item} был успешно удален из таблицы добычи '{lootTable}'"
+item_from_loot_table_could_not_be_removed: "&c{item} из таблицы добычи '{lootTable}' не может быть удален!"
+added_item_to_loot_table: "&2{item} был успешно добавлен в таблицу добычи '{lootTable}'"
+item_could_not_be_added_to_loot_table: "&c{item} не может быть добавлен в таблицу добычи '{lootTable}' (максимальный размер таблицы добычи 51)!"
+item_already_in_loot_table: "&c{item} уже в таблице добычи '{lootTable}'!"
+loot_table_created: "&2Таблица добычи '{lootTable}' успешно создана!"
+loot_table_was_removed: "&6Таблица добычи '{lootTable}' успешно удалена!"
+cooldown_bypassed: "&6Ожидание обошли! (используя разрешение: luckywheel.loottables.bypass_cooldown)"

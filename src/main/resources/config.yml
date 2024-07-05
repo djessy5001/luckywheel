@@ -1,5 +1,5 @@
 # Set the locale for all messages
 # For example, to set language to English, set locale to en, to use the file "messages_en.yml".
-# available for now: [en, es, fr, zhcn]
+# available for now: [en, es, fr, zhcn, ru]
 # Although, you should be able to create a file named "messages_pt.yml", and set this to 'locale: pt', and it should work fine
 locale: en
